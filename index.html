@@ -5,7 +5,7 @@
     <title>WBANK CMD ELITE</title>
     <style>
         body {
-            padding:10px;
+            padding: 10px;
             height: 100vh;
             overflow: hidden;
             background-image: url(bg.jpg);
@@ -23,7 +23,7 @@
             backdrop-filter: blur(25px);
             border: 2px solid #00ff88;
             padding: 15px;
-            margin-top:10px;
+            margin-top: 10px;
             height: 800px;
             overflow-y: auto;
             font-size: 10px;
@@ -69,16 +69,274 @@
 
                 // HELP
                 if (cmd === "help") {
-                    print("30+ Commands:");
-                    print("storage, session, clear storage");
-                    print("device, browser, screen, time, date");
-                    print("battery, network, location, clipboard");
-                    print("history, clear, reload");
+                    print("100+ Commands:");
+
+                    print("=== STORAGE ===");
+                    print("storage, session, clear storage, history");
+
+                    print("=== DEVICE INFO ===");
+                    print("device, browser, screen, time, date, battery");
+                    print("network, online, language, platform");
+                    print("cpu, memory, cores, performance");
+
+                    print("=== SYSTEM ===");
+                    print("clear, reload, fullscreen, exit fullscreen");
                     print("cookies, url, title, referrer");
-                    print("online, language, platform");
-                    print("cpu, memory, cores");
-                    print("fullscreen, exit fullscreen");
-                    print("random, calc, echo");
+
+                    print("=== UTILITIES ===");
+                    print("random, calc, echo, uuid, base64 encode");
+                    print("base64 decode, json format, json parse");
+                    print("uppercase, lowercase, reverse text");
+
+                    print("=== BROWSER INFO ===");
+                    print("useragent, timezone, geolocation (if allowed)");
+                    print("permissions check, clipboard read");
+
+                    print("=== STORAGE OPS ===");
+                    print("save key value, get key, delete key, export storage");
+
+                    print("=== PERFORMANCE ===");
+                    print("fps check, load time, memory usage snapshot");
+
+                    print("=== FUN COMMANDS ===");
+                    print("joke, ascii art, quote, random number");
+                    print("dice roll, coin flip, magic 8ball");
+
+                    print("=== DEVELOPER TOOLS ===");
+                    print("log test, error test, warn test");
+                    print("debug mode, trace, inspect page");
+
+                    print("=== NETWORK SIM ===");
+                    print("ping test, latency check (simulated)");
+
+                    print("=== UI CONTROLS ===");
+                    print("theme toggle, font increase, font decrease");
+                    print("scroll top, scroll bottom");
+
+                    print("=== EXTRA ===");
+                    print("help, about, version, credits");
+                }
+
+                // ================= EXTRA COMMAND PACK =================
+
+                // PING
+                else if (cmd === "ping") {
+                    print("PONG! " + Math.floor(Math.random() * 100) + "ms");
+                }
+
+                // IP (fake only browser-safe)
+                else if (cmd === "ip") {
+                    print("IP: 192.168." + Math.floor(Math.random() * 255) + "." + Math.floor(Math.random() * 255));
+                }
+
+                // SCROLL TOP
+                else if (cmd === "top") {
+                    window.scrollTo(0, 0);
+                    print("Scrolled to top");
+                }
+
+                // SCROLL BOTTOM
+                else if (cmd === "bottom") {
+                    window.scrollTo(0, document.body.scrollHeight);
+                    print("Scrolled to bottom");
+                }
+
+                // FONT BIG
+                else if (cmd === "big") {
+                    t.style.fontSize = "20px";
+                    print("Font enlarged");
+                }
+
+                // FONT SMALL
+                else if (cmd === "small") {
+                    t.style.fontSize = "10px";
+                    print("Font reduced");
+                }
+
+                // THEME GREEN
+                else if (cmd === "green") {
+                    document.body.style.color = "#00ff88";
+                    print("Green mode enabled");
+                }
+
+                // THEME RED
+                else if (cmd === "red") {
+                    document.body.style.color = "red";
+                    print("Red mode enabled");
+                }
+
+                // THEME BLUE
+                else if (cmd === "blue") {
+                    document.body.style.color = "cyan";
+                    print("Blue mode enabled");
+                }
+
+                // FAKE HACK TEXT
+                else if (cmd === "hack") {
+                    print("ACCESSING SYSTEM...");
+                    setTimeout(() => print("SYSTEM BREACHED (SIMULATION)"), 1000);
+                }
+
+                // FAKE WIFI SCAN
+                else if (cmd === "scan wifi") {
+                    print("Scanning nearby networks...");
+                    setTimeout(() => {
+                        print("WIFI_001 (secure)");
+                        print("HOME_NET (weak)");
+                        print("GUEST_WIFI (open)");
+                    }, 1500);
+                }
+
+                // DEVICE ORIENTATION
+                else if (cmd === "orientation") {
+                    print("Angle: " + screen.orientation?.type);
+                }
+
+                // COPY LAST CMD
+                else if (cmd === "copy last") {
+                    navigator.clipboard.writeText(history[history.length - 1] || "");
+                    print("Last command copied");
+                }
+
+                // DELETE LAST LINE
+                else if (cmd === "undo") {
+                    t.removeChild(t.lastChild);
+                    print("Last line removed");
+                }
+
+                // DATE FULL
+                else if (cmd === "datetime") {
+                    print(new Date().toString());
+                }
+
+                // YEAR
+                else if (cmd === "year") {
+                    print(new Date().getFullYear());
+                }
+
+                // MONTH
+                else if (cmd === "month") {
+                    print(new Date().getMonth() + 1);
+                }
+
+                // DAY
+                else if (cmd === "day") {
+                    print(new Date().getDate());
+                }
+
+                // RANDOM NUMBER 1-100
+                else if (cmd === "rand") {
+                    print(Math.floor(Math.random() * 100));
+                }
+
+                // RANDOM PASSWORD
+                else if (cmd === "password") {
+                    let p = Math.random().toString(36).slice(-10);
+                    print("Generated: " + p);
+                }
+
+                // ASCII ART
+                else if (cmd === "ascii") {
+                    print("(^_^)");
+                    print("( •_•)");
+                    print("(>_<)");
+                }
+
+                // JOKE
+                else if (cmd === "joke") {
+                    let jokes = ["Why dev? because life bug", "404 love not found", "I code therefore I am"];
+                    print(jokes[Math.floor(Math.random() * jokes.length)]);
+                }
+
+                // SYSTEM STATUS
+                else if (cmd === "status") {
+                    print("System: ONLINE");
+                    print("CPU: STABLE");
+                    print("RAM: OK");
+                }
+
+                // CLEAR HISTORY
+                else if (cmd === "clear history") {
+                    history = [];
+                    print("History cleared");
+                }
+
+                // ALERT TEST
+                else if (cmd === "alert") {
+                    alert("SYSTEM MESSAGE");
+                }
+
+                // SOUND BEEP (browser beep)
+                else if (cmd === "beep") {
+                    let audio = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
+                    audio.play();
+                    print("Beep played");
+                }
+
+                // HIDE INPUT
+                else if (cmd === "hide input") {
+                    i.style.display = "none";
+                    print("Input hidden");
+                }
+
+                // SHOW INPUT
+                else if (cmd === "show input") {
+                    i.style.display = "block";
+                    print("Input shown");
+                }
+
+                // FAKE LOGIN
+                else if (cmd === "login") {
+                    print("USERNAME: ADMIN");
+                    print("PASSWORD: ********");
+                    print("LOGIN SUCCESS (SIMULATION)");
+                }
+
+                // FAKE FIREWALL
+                else if (cmd === "firewall") {
+                    print("Firewall: ACTIVE");
+                }
+
+                // SYSTEM INFO FULL
+                else if (cmd === "sysinfo") {
+                    print("OS: " + navigator.platform);
+                    print("Browser: " + navigator.userAgent);
+                    print("Lang: " + navigator.language);
+                }
+
+                // UPTIME
+                else if (cmd === "uptime") {
+                    print("Uptime: " + Math.floor(performance.now() / 1000) + " seconds");
+                }
+
+                // SPEED TEST FAKE
+                else if (cmd === "speed") {
+                    print("Download: " + Math.floor(Math.random() * 100) + " Mbps");
+                }
+
+                // MATRIX EFFECT TOGGLE (simple text spam)
+                else if (cmd === "matrix") {
+                    for (let i = 0; i < 10; i++) {
+                        print(Math.random().toString(2).slice(2));
+                    }
+                }
+
+                // EXIT EFFECT
+                else if (cmd === "shutdown") {
+                    print("SYSTEM SHUTTING DOWN...");
+                    setTimeout(() => print("SYSTEM OFFLINE (SIMULATION)"), 1500);
+                }
+
+                // BOOT
+                else if (cmd === "boot") {
+                    print("BOOTING SYSTEM...");
+                    setTimeout(() => print("SYSTEM READY"), 1000);
+                }
+
+                // HELP EXTENDED
+                else if (cmd === "help2") {
+                    print("ADVANCED COMMANDS LOADED");
+                    print("hack, scan wifi, beep, sysinfo, matrix, shutdown");
                 }
 
                 // STORAGE
