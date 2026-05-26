@@ -1,0 +1,150 @@
+body{
+    margin:0;
+    height:100vh;
+    background:#000;
+    overflow:hidden;
+    font-family:Arial;
+}
+
+/* BACKGROUND */
+.bg{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background: radial-gradient(circle at center,#0a0a0a,#000);
+    overflow:hidden;
+}
+
+/* DRAGON CONTAINER */
+.dragon{
+    position:absolute;
+    bottom:-500px; /* START FROM BOTTOM */
+    left:50%;
+    transform:translateX(-50%) scale(1.2);
+
+    width:500px;
+    height:500px;
+
+    border-radius:50%;
+
+    /* DRAGON SWIRL STYLE */
+    background: conic-gradient(
+        transparent 0deg,
+        #00ff88 40deg,
+        transparent 80deg,
+        #00ff88 120deg,
+        transparent 160deg,
+        #00ff88 200deg,
+        transparent 240deg,
+        #00ff88 280deg,
+        transparent 320deg
+    );
+
+    filter: blur(15px);
+
+    opacity:0.15;
+
+    animation: riseDragon 4s ease-out forwards,
+               glowPulse 2s infinite alternate;
+}
+
+/* DRAGON BODY LINE */
+.dragon::before{
+    content:"";
+    position:absolute;
+
+    width:350px;
+    height:350px;
+
+    top:80px;
+    left:80px;
+
+    border:4px solid #00ff88;
+
+    border-radius:50% 50% 50% 0;
+
+    box-shadow:
+        0 0 20px #00ff88,
+        inset 0 0 20px #00ff88;
+
+    animation: rotateDragon 10s linear infinite;
+}
+
+/* HEAD EFFECT */
+.dragon::after{
+    content:"";
+    position:absolute;
+
+    width:80px;
+    height:80px;
+
+    top:40px;
+    right:60px;
+
+    border-radius:50%;
+    background:#00ff88;
+
+    box-shadow:
+        0 0 25px #00ff88,
+        0 0 50px #00ff88;
+
+    animation: pulse 1.5s infinite;
+}
+
+/* RISE ANIMATION (BOTTOM → CENTER) */
+@keyframes riseDragon{
+    0%{
+        bottom:-500px;
+        opacity:0;
+        transform:translateX(-50%) scale(0.5);
+    }
+    50%{
+        opacity:0.2;
+    }
+    100%{
+        bottom:50%;
+        transform:translate(-50%, 50%) scale(1.2);
+        opacity:0.25;
+    }
+}
+
+/* ROTATION (DRAGON SWIRL) */
+@keyframes rotateDragon{
+    from{
+        transform:rotate(0deg);
+    }
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+/* GLOW PULSE */
+@keyframes glowPulse{
+    from{
+        filter: blur(10px);
+    }
+    to{
+        filter: blur(25px);
+    }
+}
+
+/* HEAD PULSE */
+@keyframes pulse{
+    0%{
+        transform:scale(1);
+        opacity:0.7;
+    }
+    100%{
+        transform:scale(1.3);
+        opacity:1;
+    }
+}
+
+/* TITLE */
+.title{
+    position:absolute;
+    top:20px;
+    left:20px;
+    color:#00ff88;
+    text-shadow:0 0 15px #00ff88;
+}

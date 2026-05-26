@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WBANK CMD ELITE</title>
+    <style>
+        body {
+            padding:10px;
+            height: 100vh;
+            overflow: hidden;
+            background-image: url(bg.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            color: #00ff88;
+            font-family: monospace;
+            padding: 20px;
+            backdrop-filter: opacity(-2px);
+        }
+
+        #terminal {
+            background: transparent;
+            backdrop-filter: blur(25px);
+            border: 2px solid #00ff88;
+            padding: 15px;
+            margin-top:10px;
+            height: 800px;
+            overflow-y: auto;
+            font-size: 10px;
+        }
+
+        input {
+            width: 90%;
+            height: 50px;
+            font-size: 30px;
+            position: fixed;
+            bottom: 40px;
+            padding: 10px;
+            background: black;
+            color: #00ff88;
+            border: 2px solid #00ff88;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="terminal" style="font-size: 30px;">
+        <div class="typing-text">
+            SYSTEM BREACH INITIATED...
+        </div>
+    </div>
+    <input id="commandInput" placeholder="Type command...">
+
+    <script>
+        const t = document.getElementById("terminal");
+        const i = document.getElementById("commandInput");
+
+        let history = [];
+
+        i.addEventListener("keypress", async (e) => {
+            if (e.key === "Enter") {
+                let cmd = i.value.toLowerCase();
+                history.push(cmd);
+                print(">> " + cmd);
+
+                // ================= COMMANDS =================
+
+                // HELP
+                if (cmd === "help") {
+                    print("30+ Commands:");
+                    print("storage, session, clear storage");
+                    print("device, browser, screen, time, date");
+                    print("battery, network, location, clipboard");
+                    print("history, clear, reload");
+                    print("cookies, url, title, referrer");
+                    print("online, language, platform");
+                    print("cpu, memory, cores");
+                    print("fullscreen, exit fullscreen");
+                    print("random, calc, echo");
+                }
+
+                // STORAGE
+                else if (cmd === "storage") {
+                    for (let x in localStorage) {
+                        if (localStorage[x])
+                            print(x + " = " + localStorage[x]);
+                    }
+                }
+
+                // SESSION
+                else if (cmd === "session") {
+                    for (let x in sessionStorage) {
+                        if (sessionStorage[x])
+                            print(x + " = " + sessionStorage[x]);
+                    }
+                }
+
+                // CLEAR STORAGE
+                else if (cmd === "clear storage") {
+                    localStorage.clear();
+                    print("Storage cleared!");
+                }
+
+                // DEVICE
+                else if (cmd === "device") {
+                    print("Platform: " + navigator.platform);
+                    print("Cores: " + navigator.hardwareConcurrency);
+                    print("Memory: " + navigator.deviceMemory + "GB");
+                }
+
+                // BROWSER
+                else if (cmd === "browser") {
+                    print(navigator.userAgent);
+                }
+
+                // SCREEN
+                else if (cmd === "screen") {
+                    print(screen.width + " x " + screen.height);
+                }
+
+                // TIME
+                else if (cmd === "time") {
+                    print(new Date().toLocaleTimeString());
+                }
+
+                // DATE
+                else if (cmd === "date") {
+                    print(new Date().toDateString());
+                }
+
+                // BATTERY
+                else if (cmd === "battery") {
+                    if (navigator.getBattery) {
+                        let b = await navigator.getBattery();
+                        print("Battery: " + (b.level * 100) + "%");
+                        print("Charging: " + b.charging);
+                    } else print("Not supported");
+                }
+
+                // NETWORK
+                else if (cmd === "network") {
+                    print("Online: " + navigator.onLine);
+                }
+
+                // LOCATION
+                else if (cmd === "location") {
+                    navigator.geolocation.getCurrentPosition(
+                        pos => {
+                            print("Lat: " + pos.coords.latitude);
+                            print("Long: " + pos.coords.longitude);
+                        },
+                        () => print("Denied")
+                    );
+                }
+
+                // CLIPBOARD
+                else if (cmd === "clipboard") {
+                    try {
+                        let text = await navigator.clipboard.readText();
+                        print(text);
+                    } catch {
+                        print("Denied");
+                    }
+                }
+
+                // HISTORY
+                else if (cmd === "history") {
+                    history.forEach(h => print(h));
+                }
+
+                // CLEAR TERMINAL
+                else if (cmd === "clear") {
+                    t.innerHTML = "";
+                }
+
+                // RELOAD
+                else if (cmd === "reload") {
+                    location.reload();
+                }
+
+                // COOKIES
+                else if (cmd === "cookies") {
+                    print(document.cookie || "No cookies");
+                }
+
+                // URL
+                else if (cmd === "url") {
+                    print(location.href);
+                }
+
+                // TITLE
+                else if (cmd === "title") {
+                    print(document.title);
+                }
+
+                // REFERRER
+                else if (cmd === "referrer") {
+                    print(document.referrer || "None");
+                }
+
+                // ONLINE
+                else if (cmd === "online") {
+                    print(navigator.onLine);
+                }
+
+                // LANGUAGE
+                else if (cmd === "language") {
+                    print(navigator.language);
+                }
+
+                // PLATFORM
+                else if (cmd === "platform") {
+                    print(navigator.platform);
+                }
+
+                // CPU
+                else if (cmd === "cpu") {
+                    print(navigator.hardwareConcurrency + " cores");
+                }
+
+                // MEMORY
+                else if (cmd === "memory") {
+                    print(navigator.deviceMemory + " GB");
+                }
+
+                // FULLSCREEN
+                else if (cmd === "fullscreen") {
+                    document.documentElement.requestFullscreen();
+                }
+
+                // EXIT FULLSCREEN
+                else if (cmd === "exit fullscreen") {
+                    document.exitFullscreen();
+                }
+
+                // RANDOM
+                else if (cmd === "random") {
+                    print(Math.random());
+                }
+
+                // CALC
+                else if (cmd.startsWith("calc")) {
+                    try {
+                        let exp = cmd.replace("calc ", "");
+                        print(eval(exp));
+                    } catch {
+                        print("Invalid");
+                    }
+                }
+
+                // ECHO
+                else if (cmd.startsWith("echo")) {
+                    print(cmd.replace("echo ", ""));
+                }
+
+                // DEFAULT
+                else {
+                    print("Unknown command. Type 'help'");
+                }
+
+                i.value = "";
+            }
+        });
+
+        function print(txt) {
+            let d = document.createElement("div");
+            d.textContent = txt;
+            t.appendChild(d);
+            t.scrollTop = t.scrollHeight;
+        }
+    </script>
+
+</body>
+
+</html>
