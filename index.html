@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>WBANK CMD ELITE</title>
+    <title>WHITE_CMD</title>
 
     <style>
         * {
@@ -14,7 +14,7 @@
             height: 100vh;
             background: url(bg.jpg);
             background-size: cover;
-            background-position:center;
+            background-position: center;
             color: #00ff88;
             font-family: monospace;
             display: flex;
@@ -36,7 +36,7 @@
         /* INPUT */
         input {
             width: 100%;
-            height: 60px;
+            height: 100px;
             font-size: 18px;
             background: black;
             color: #00ff88;
@@ -49,18 +49,43 @@
         }
 
         /* ================= MOBILE ================= */
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                height: 93vh;
+                background: url(bg.jpg);
+                background-size: cover;
+                background-position: center;
+                color: #00ff88;
+                font-family: monospace;
+                display: flex;
+                overflow: y;
+                flex-direction: column;
+            }
 
             #terminal {
-                font-size: 18px;
+                font-size: 38px;
                 /* mas malaki sa phone */
                 padding: 10px;
             }
 
             input {
-                height: 65px;
-                font-size: 20px;
+                background: rgba(0, 0, 0, 0.178);
+                position: fixed;
+                bottom: 20px;
+                height: 100px;
+                font-size: 30px;
                 padding: 12px;
+            }
+
+            input:focus {
+                color: rgb(9, 255, 0);
+                background: rgba(21, 255, 0, 0);
             }
         }
 
@@ -158,9 +183,11 @@
                         print("music on/off, volume set");
                         print("typing speed, typing sound on/off");
                         print("undo, random, date");
-                        print("device full,ram, cpu, screen, network, battery");
-                        print("history clear, history export");
-                        print("about, system scan");
+                        print("device full, ram, cpu, screen, network, battery");
+                        print("subnet, profile, clear storage");
+                        print("system scan, opensite, search");
+                        print("secretsites, timezone");
+                        print("about, system scan, profile");
                     }
 
                     // CLEAR
@@ -330,6 +357,97 @@
                         }
                     }
 
+                    else if (lower === "scan network") {
+                        print("Scanning local network...");
+
+                        let devices = [
+                            "192.168.1.1 Router",
+                            "192.168.1.2 Phone",
+                            "192.168.1.3 Laptop",
+                            "192.168.1.4 Unknown Device"
+                        ];
+
+                        let i = 0;
+                        let interval = setInterval(() => {
+                            print("FOUND → " + devices[i]);
+                            i++;
+
+                            if (i >= devices.length) {
+                                clearInterval(interval);
+                                print("SCAN COMPLETE");
+                            }
+                        }, 600);
+                    }
+
+                    else if (lower === "subnet") {
+                        print("please type \"subnet <your IP>/<your CIDR>\"");
+                        print("=================================================")
+                        print("example: subnet 192.168.1.1/24");
+                        print("=================================================")
+                    }
+
+                    else if (lower.startsWith("subnet ")) {
+                        let input = cmd.replace("subnet ", "").trim();
+
+                        try {
+                            let [ip, cidr] = input.split("/");
+
+                            if (!ip || !cidr) {
+                                print("Format: subnet 192.168.1.10/24");
+                                return;
+                            }
+
+                            cidr = parseInt(cidr);
+
+                            if (cidr < 0 || cidr > 32) {
+                                print("Invalid CIDR ❌");
+                                return;
+                            }
+
+                            let ipParts = ip.split(".").map(Number);
+
+                            if (ipParts.length !== 4 || ipParts.some(n => isNaN(n) || n < 0 || n > 255)) {
+                                print("Invalid IP address ❌");
+                                return;
+                            }
+
+                            let ipNum =
+                                (ipParts[0] << 24) |
+                                (ipParts[1] << 16) |
+                                (ipParts[2] << 8) |
+                                ipParts[3];
+
+                            let mask = cidr === 0 ? 0 : (0xFFFFFFFF << (32 - cidr)) >>> 0;
+
+                            let network = ipNum & mask;
+                            let broadcast = network | (~mask >>> 0);
+
+                            function toIP(num) {
+                                return [
+                                    (num >>> 24) & 255,
+                                    (num >>> 16) & 255,
+                                    (num >>> 8) & 255,
+                                    num & 255
+                                ].join(".");
+                            }
+
+                            let totalHosts = Math.pow(2, (32 - cidr));
+                            let usableHosts = totalHosts - 2;
+
+                            print("=== SUBNET CALCULATION ===");
+                            print("IP Address: " + ip);
+                            print("CIDR: /" + cidr);
+                            print("Subnet Mask: " + toIP(mask));
+                            print("Network Address: " + toIP(network));
+                            print("Broadcast Address: " + toIP(broadcast));
+                            print("Total Hosts: " + totalHosts);
+                            print("Usable Hosts: " + (usableHosts > 0 ? usableHosts : 0));
+
+                        } catch (e) {
+                            print("Error in subnet calculation ❌");
+                        }
+                    }
+
                     // ================= BATTERY =================
                     else if (lower === "battery") {
                         if (navigator.getBattery) {
@@ -339,6 +457,114 @@
                         } else {
                             print("Battery API not supported");
                         }
+                    }
+
+
+
+                    else if (lower === "search") {
+                        print("Search: ");
+                    }
+
+                    else if (lower === "secretsites") {
+
+                        let pass = prompt("Enter system password: ");
+
+                        if (pass === "WHITE12") {
+
+                            print("🔓 ACCESS GRANTED");
+                            print("Please choose a site to open:");
+                            print("ph");
+                            print("xv");
+                            print("bg");
+                            print("kf");
+                            print("pf");
+                            print("Lp");
+
+                        } else {
+
+                            print("❌ ACCESS DENIED");
+                            print("Wrong password");
+
+                        }
+                    }
+
+                    else if (lower === "ph") {
+                        print("Opening...");
+
+                        setTimeout(() => {
+                            window.open("https://www.pornhub.com", "_blank");
+                        }, 800);
+                    }
+
+                    else if (lower === "xv") {
+                        print("Opening...");
+
+                        setTimeout(() => {
+                            window.open("https://www.xvideos.com", "_blank");
+                        }, 800);
+                    }
+
+                    else if (lower === "bg") {
+                        print("Opening...");
+
+                        setTimeout(() => {
+                            window.open("https://www.beeg.com", "_blank");
+                        }, 800);
+                    }
+
+                    else if (lower === "kf") {
+                        print("Opening...");
+
+                        setTimeout(() => {
+                            window.open("https://kantotflix.com", "_blank");
+                        }, 800);
+                    }
+
+                    else if (lower === "pf") {
+                        print("Opening...");
+
+                        setTimeout(() => {
+                            window.open("https://pinayflixtv.com", "_blank");
+                        }, 800);
+                    }
+
+                    else if (lower === "Lp") {
+                        print("Opening...");
+
+                        setTimeout(() => {
+                            window.open("https://lootedpinay.com", "_blank");
+                        }, 800);
+                    }
+
+                    // ================= Open =================
+
+                    else if (lower === "opensite") {
+                        print("Please choose a site to open");
+                        print("open yt, open fb, open yt");
+                    }
+
+                    else if (lower === "open yt") {
+                        print("Opening YouTube...");
+
+                        setTimeout(() => {
+                            window.open("https://www.youtube.com", "_blank");
+                        }, 800);
+                    }
+
+                    else if (lower === "open fb") {
+                        print("Opening Facebook...");
+
+                        setTimeout(() => {
+                            window.open("https://www.facebook.com", "_blank");
+                        }, 800);
+                    }
+
+                    else if (lower === "open ig") {
+                        print("Opening Instagram...");
+
+                        setTimeout(() => {
+                            window.open("https://www.instagram.com", "_blank");
+                        }, 800);
                     }
 
                     // ================= HISTORY CLEAR =================
@@ -355,10 +581,73 @@
                     }
 
                     else if (lower === "about") {
-                        print("Founder of WHITE_CMD: Wendell Tyrone A. Jimenez, 20 years old");
-                        print("Come and visit my Github => https://Wentyrone12.github.io <=");
 
+                        print("=================================================================");
+                        print("🧠 SYSTEM PROFILE: WHITE_CMD");
+                        print("=================================================================");
 
+                        print("👤 Name: Wendell Tyrone A. Jimenez");
+                        print("🎓 Age: 20 years old");
+                        print("📍 Location: Philippines");
+                        print("🏫 Role: IT Student / Developer");
+
+                        print("=================================================================");
+
+                        print("💻 SKILLS & EXPERTISE:");
+                        print("- Full Stack Web Development");
+                        print("- Backend Development (C#, JavaScript, Firebase)");
+                        print("- Networking & System Concepts");
+                        print("- Ethical Hacking Fundamentals");
+                        print("- UI/UX & Frontend Design");
+                        print("- Problem Solving & Debugging");
+
+                        print("=================================================================");
+
+                        print("🚀 CURRENT PROJECT:");
+                        print("WHITE_CMD - Cyber Terminal System");
+                        print("A browser-based command-line system with");
+                        print("network tools, calculators, converters, and utilities.");
+
+                        print("=================================================================");
+
+                        print("🎯 GOAL:");
+                        print("To become a professional Full Stack Developer");
+                        print("and build impactful systems that help people.");
+
+                        print("=================================================================");
+                        print("Come and visit my Github Portfolio => 🔴https://wentyrone12.github.io/MyPortfolio🔴 <=")
+                        print("=================================================================");
+                        print("")
+                        print("")
+                        print("")
+                        print("")
+                        print("")
+                        print("=================================================================");
+                        print("Come and visit my Services => 🔴https://wentyrone12.github.io🔴 <=")
+                        print("=================================================================");
+
+                    }
+
+                    else if (lower.startsWith("profile")) {
+                        let parts = cmd.replace("profile ", "").split(",");
+
+                        if (parts.length < 2) {
+                            print("Usage: profile Full Name, YYYY-MM-DD");
+                        } else {
+                            let name = parts[0].trim();
+                            let birth = parts[1].trim();
+
+                            print("=== USER PROFILE ===");
+                            print("Name: " + name);
+                            print("Birthday: " + birth);
+
+                            generatePasswords(name, birth);
+                        }
+                    }
+
+                    else if (lower === "clear storage") {
+                        localStorage.clear();
+                        print("🧹 LocalStorage cleared successfully");
                     }
 
                     else if (lower === "system scan") {
@@ -369,6 +658,161 @@
                             print("✔ Network OK");
                             print("✔ Security: ACTIVE");
                         }, 4500);
+                    }
+
+                    else if (lower === "live clock") {
+
+                        print("🕒 LIVE CLOCK STARTED");
+
+                        setInterval(() => {
+
+                            let now = new Date();
+
+                            print(now.toLocaleTimeString());
+
+                        }, 1000);
+                    }
+
+                    else if (lower.startsWith("search ")) {
+                        let query = cmd.replace("search ", "");
+                        let url = "https://www.google.com/search?q=" + encodeURIComponent(query);
+
+                        print("Searching: " + query);
+
+                        setTimeout(() => {
+                            window.open(url, "_blank");
+                        }, 800);
+                    }
+
+                    else if (lower === "timezone") {
+
+                        print("🌍 AVAILABLE TIMEZONES:");
+                        print("time philippines");
+                        print("time japan");
+                        print("time korea");
+                        print("time usa");
+                        print("time london");
+                        print("time dubai");
+                        print("time canada");
+                        print("time australia");
+                        print("time singapore");
+                        print("time india");
+                        print("time china");
+                        print("time france");
+                        print("time germany");
+                        print("time brazil");
+                        print("time south africa");
+
+                    }
+
+                    else if (lower.startsWith("time ")) {
+
+                        let place = lower.replace("time ", "").trim();
+
+                        const zones = {
+
+                            philippines: {
+                                zone: "Asia/Manila",
+                                label: "🇵🇭 Philippines"
+                            },
+
+                            japan: {
+                                zone: "Asia/Tokyo",
+                                label: "🇯🇵 Japan"
+                            },
+
+                            korea: {
+                                zone: "Asia/Seoul",
+                                label: "🇰🇷 South Korea"
+                            },
+
+                            usa: {
+                                zone: "America/New_York",
+                                label: "🇺🇸 USA"
+                            },
+
+                            london: {
+                                zone: "Europe/London",
+                                label: "🇬🇧 London"
+                            },
+
+                            dubai: {
+                                zone: "Asia/Dubai",
+                                label: "🇦🇪 Dubai"
+                            },
+
+                            canada: {
+                                zone: "America/Toronto",
+                                label: "🇨🇦 Canada"
+                            },
+
+                            australia: {
+                                zone: "Australia/Sydney",
+                                label: "🇦🇺 Australia"
+                            },
+
+                            singapore: {
+                                zone: "Asia/Singapore",
+                                label: "🇸🇬 Singapore"
+                            },
+
+                            india: {
+                                zone: "Asia/Kolkata",
+                                label: "🇮🇳 India"
+                            },
+
+                            china: {
+                                zone: "Asia/Shanghai",
+                                label: "🇨🇳 China"
+                            },
+
+                            france: {
+                                zone: "Europe/Paris",
+                                label: "🇫🇷 France"
+                            },
+
+                            germany: {
+                                zone: "Europe/Berlin",
+                                label: "🇩🇪 Germany"
+                            },
+
+                            brazil: {
+                                zone: "America/Sao_Paulo",
+                                label: "🇧🇷 Brazil"
+                            },
+
+                            "south africa": {
+                                zone: "Africa/Johannesburg",
+                                label: "🇿🇦 South Africa"
+                            }
+
+                        };
+
+                        if (zones[place]) {
+
+                            let now = new Date();
+
+                            let time = now.toLocaleString("en-US", {
+                                timeZone: zones[place].zone,
+                                weekday: "long",
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                                hour: "numeric",
+                                minute: "numeric",
+                                second: "numeric",
+                                hour12: true
+                            });
+
+                            print("🌍 " + zones[place].label);
+                            print("🕒 " + time);
+
+                        } else {
+
+                            print("❌ Timezone not found");
+                            print("Type: timezone");
+
+                        }
                     }
 
                     // UNKNOWN
@@ -386,11 +830,82 @@
 
         // SUGGEST
         function suggest(cmd) {
-            let commands = ["help", "clear", "history", "calc", "echo", "save", "get", "delete", "music on"];
+            let commands = ["help", "storage", "history", "calc", "echo", "save", "get", "delete", "music on"];
             let found = commands.find(c => c.includes(cmd));
-            if (found) print("Unknown. Did you mean: " + found + " ?");
-            else print("Unknown command");
+            if (found) print("Error. Did you mean: " + found + " ?");
+            else print("Error command");
         }
+
+        window.onload = () => {
+            bootSequence();
+        };
+
+        function bootSequence() {
+            print("Initializing WHITE KALI LINUX........");
+            print("Loading system modules...");
+            print("Connecting neural interface...");
+            print("✔ SYSTEM READY");
+            print("Type 'help' to start");
+        }
+
+        function generatePasswords(name, birth) {
+            print("Generating smart password ideas...");
+
+            let n = name.replace(/\s/g, "").toLowerCase();
+            let b = birth.replace(/-/g, "");
+
+            let year = birth.split("-")[0];
+            let day = birth.split("-")[2] || "00";
+
+            let passwords = [
+                n + year + "!",
+                n + day + "@",
+                n + "@" + year,
+                n + b.slice(-4),
+                n.charAt(0).toUpperCase() + n.slice(1) + year,
+                year + n + "2026",
+                n + "X" + Math.floor(Math.random() * 999),
+                "WBANK" + n.slice(0, 3) + year
+            ];
+
+            print("=== PASSWORD IDEAS ===");
+
+            let i = 0;
+            let interval = setInterval(() => {
+                print("🔐 " + passwords[i]);
+                i++;
+
+                if (i >= passwords.length) {
+                    clearInterval(interval);
+                    print("✔ Done generating passwords");
+                }
+            }, 400);
+        }
+
+        setInterval(() => {
+            let dot = document.createElement("div");
+            dot.textContent = Math.random() > 0.5 ? "1" : "0";
+            dot.style.position = "fixed";
+            dot.style.left = Math.random() * 100 + "vw";
+            dot.style.top = "0px";
+            dot.style.color = "#00ff88";
+            dot.style.opacity = "0.3";
+            dot.style.fontSize = "40px";
+            document.body.appendChild(dot);
+
+            let fall = setInterval(() => {
+                dot.style.top = dot.offsetTop + 5 + "px";
+                if (dot.offsetTop > window.innerHeight) {
+                    clearInterval(fall);
+                    dot.remove();
+                }
+            }, 50);
+        }, 200);
+
+
+        document.addEventListener("contextmenu", function (e) {
+            e.preventDefault();
+        });
     </script>
 
 </body>
