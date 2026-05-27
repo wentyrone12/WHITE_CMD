@@ -3,54 +3,86 @@
 
 <head>
     <title>WBANK CMD ELITE</title>
+
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            padding: 10px;
+            margin: 0;
             height: 100vh;
-            overflow: hidden;
-            background-image: url(bg.jpg);
+            background: url(bg.jpg);
             background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
+            background-position:center;
             color: #00ff88;
             font-family: monospace;
-            padding: 20px;
-            backdrop-filter: opacity(-2px);
+            display: flex;
+            flex-direction: column;
         }
 
+        /* TERMINAL */
         #terminal {
-            background: transparent;
-            backdrop-filter: blur(25px);
+            flex: 1;
+            backdrop-filter: blur(20px);
             border: 2px solid #00ff88;
             padding: 15px;
-            margin-top: 10px;
-            height: 800px;
             overflow-y: auto;
-            font-size: 10px;
+
+            /* PC default */
+            font-size: 16px;
         }
 
+        /* INPUT */
         input {
-            width: 90%;
-            height: 50px;
-            font-size: 30px;
-            position: fixed;
-            bottom: 40px;
-            padding: 10px;
+            width: 100%;
+            height: 60px;
+            font-size: 18px;
             background: black;
             color: #00ff88;
-            border: 2px solid #00ff88;
-            margin-top: 10px;
+            border: none;
+            border-top: 2px solid #00ff88;
+            padding: 10px;
+
+            position: sticky;
+            bottom: 0;
+        }
+
+        /* ================= MOBILE ================= */
+        @media (max-width: 768px) {
+
+            #terminal {
+                font-size: 18px;
+                /* mas malaki sa phone */
+                padding: 10px;
+            }
+
+            input {
+                height: 65px;
+                font-size: 20px;
+                padding: 12px;
+            }
+        }
+
+        /* ================= SMALL PHONE ================= */
+        @media (max-width: 480px) {
+
+            #terminal {
+                font-size: 20px;
+                /* readable talaga */
+            }
+
+            input {
+                font-size: 22px;
+                height: 70px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <div id="terminal" style="font-size: 30px;">
-        <div class="typing-text">
-            SYSTEM BREACH INITIATED...
-        </div>
-    </div>
+    <div id="terminal"></div>
     <input id="commandInput" placeholder="Type command...">
 
     <script>
@@ -58,475 +90,306 @@
         const i = document.getElementById("commandInput");
 
         let history = [];
+        let music = null;
+        let volume = 1;
 
+        // ===== TYPING SETTINGS =====
+        let typingSpeed = 20; // mas mababa = mas mabilis
+        let typingQueue = Promise.resolve();
+        let typingSound = false;
+
+        // AUTO FOCUS
+        setInterval(() => i.focus(), 1000);
+
+        // ================= TYPING FUNCTION =================
+        function typePrint(text) {
+            typingQueue = typingQueue.then(() => {
+                return new Promise(resolve => {
+                    let d = document.createElement("div");
+                    t.appendChild(d);
+
+                    let index = 0;
+
+                    function type() {
+                        if (index < text.length) {
+                            d.textContent += text[index];
+
+                            if (typingSound) {
+                                let beep = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
+                                beep.volume = 0.1;
+                                beep.play();
+                            }
+
+                            index++;
+                            setTimeout(type, typingSpeed);
+                        } else {
+                            t.scrollTop = t.scrollHeight;
+                            resolve();
+                        }
+                    }
+
+                    type();
+                });
+            });
+        }
+
+        // ================= PRINT =================
+        function print(txt) {
+            typePrint(txt);
+        }
+
+        // ================= COMMAND =================
         i.addEventListener("keypress", async (e) => {
             if (e.key === "Enter") {
-                let cmd = i.value.toLowerCase();
+
+                let cmd = i.value.trim();
+                let lower = cmd.toLowerCase();
+
                 history.push(cmd);
                 print(">> " + cmd);
 
-                // ================= COMMANDS =================
+                try {
 
-                // HELP
-                if (cmd === "help") {
-                    print("100+ Commands:");
-
-                    print("=== STORAGE ===");
-                    print("storage, session, clear storage, history");
-
-                    print("=== DEVICE INFO ===");
-                    print("device, browser, screen, time, date, battery");
-                    print("network, online, language, platform");
-                    print("cpu, memory, cores, performance");
-
-                    print("=== SYSTEM ===");
-                    print("clear, reload, fullscreen, exit fullscreen");
-                    print("cookies, url, title, referrer");
-
-                    print("=== UTILITIES ===");
-                    print("random, calc, echo, uuid, base64 encode");
-                    print("base64 decode, json format, json parse");
-                    print("uppercase, lowercase, reverse text");
-
-                    print("=== BROWSER INFO ===");
-                    print("useragent, timezone, geolocation (if allowed)");
-                    print("permissions check, clipboard read");
-
-                    print("=== STORAGE OPS ===");
-                    print("save key value, get key, delete key, export storage");
-
-                    print("=== PERFORMANCE ===");
-                    print("fps check, load time, memory usage snapshot");
-
-                    print("=== FUN COMMANDS ===");
-                    print("joke, ascii art, quote, random number");
-                    print("dice roll, coin flip, magic 8ball");
-
-                    print("=== DEVELOPER TOOLS ===");
-                    print("log test, error test, warn test");
-                    print("debug mode, trace, inspect page");
-
-                    print("=== NETWORK SIM ===");
-                    print("ping test, latency check (simulated)");
-
-                    print("=== UI CONTROLS ===");
-                    print("theme toggle, font increase, font decrease");
-                    print("scroll top, scroll bottom");
-
-                    print("=== EXTRA ===");
-                    print("help, about, version, credits");
-                }
-
-                // ================= EXTRA COMMAND PACK =================
-
-                // PING
-                else if (cmd === "ping") {
-                    print("PONG! " + Math.floor(Math.random() * 100) + "ms");
-                }
-
-                // IP (fake only browser-safe)
-                else if (cmd === "ip") {
-                    print("IP: 192.168." + Math.floor(Math.random() * 255) + "." + Math.floor(Math.random() * 255));
-                }
-
-                // SCROLL TOP
-                else if (cmd === "top") {
-                    window.scrollTo(0, 0);
-                    print("Scrolled to top");
-                }
-
-                // SCROLL BOTTOM
-                else if (cmd === "bottom") {
-                    window.scrollTo(0, document.body.scrollHeight);
-                    print("Scrolled to bottom");
-                }
-
-                // FONT BIG
-                else if (cmd === "big") {
-                    t.style.fontSize = "20px";
-                    print("Font enlarged");
-                }
-
-                // FONT SMALL
-                else if (cmd === "small") {
-                    t.style.fontSize = "10px";
-                    print("Font reduced");
-                }
-
-                // THEME GREEN
-                else if (cmd === "green") {
-                    document.body.style.color = "#00ff88";
-                    print("Green mode enabled");
-                }
-
-                // THEME RED
-                else if (cmd === "red") {
-                    document.body.style.color = "red";
-                    print("Red mode enabled");
-                }
-
-                // THEME BLUE
-                else if (cmd === "blue") {
-                    document.body.style.color = "cyan";
-                    print("Blue mode enabled");
-                }
-
-                // FAKE HACK TEXT
-                else if (cmd === "hack") {
-                    print("ACCESSING SYSTEM...");
-                    setTimeout(() => print("SYSTEM BREACHED (SIMULATION)"), 1000);
-                }
-
-                // FAKE WIFI SCAN
-                else if (cmd === "scan wifi") {
-                    print("Scanning nearby networks...");
-                    setTimeout(() => {
-                        print("WIFI_001 (secure)");
-                        print("HOME_NET (weak)");
-                        print("GUEST_WIFI (open)");
-                    }, 1500);
-                }
-
-                // DEVICE ORIENTATION
-                else if (cmd === "orientation") {
-                    print("Angle: " + screen.orientation?.type);
-                }
-
-                // COPY LAST CMD
-                else if (cmd === "copy last") {
-                    navigator.clipboard.writeText(history[history.length - 1] || "");
-                    print("Last command copied");
-                }
-
-                // DELETE LAST LINE
-                else if (cmd === "undo") {
-                    t.removeChild(t.lastChild);
-                    print("Last line removed");
-                }
-
-                // DATE FULL
-                else if (cmd === "datetime") {
-                    print(new Date().toString());
-                }
-
-                // YEAR
-                else if (cmd === "year") {
-                    print(new Date().getFullYear());
-                }
-
-                // MONTH
-                else if (cmd === "month") {
-                    print(new Date().getMonth() + 1);
-                }
-
-                // DAY
-                else if (cmd === "day") {
-                    print(new Date().getDate());
-                }
-
-                // RANDOM NUMBER 1-100
-                else if (cmd === "rand") {
-                    print(Math.floor(Math.random() * 100));
-                }
-
-                // RANDOM PASSWORD
-                else if (cmd === "password") {
-                    let p = Math.random().toString(36).slice(-10);
-                    print("Generated: " + p);
-                }
-
-                // ASCII ART
-                else if (cmd === "ascii") {
-                    print("(^_^)");
-                    print("( •_•)");
-                    print("(>_<)");
-                }
-
-                // JOKE
-                else if (cmd === "joke") {
-                    let jokes = ["Why dev? because life bug", "404 love not found", "I code therefore I am"];
-                    print(jokes[Math.floor(Math.random() * jokes.length)]);
-                }
-
-                // SYSTEM STATUS
-                else if (cmd === "status") {
-                    print("System: ONLINE");
-                    print("CPU: STABLE");
-                    print("RAM: OK");
-                }
-
-                // CLEAR HISTORY
-                else if (cmd === "clear history") {
-                    history = [];
-                    print("History cleared");
-                }
-
-                // ALERT TEST
-                else if (cmd === "alert") {
-                    alert("SYSTEM MESSAGE");
-                }
-
-                // SOUND BEEP (browser beep)
-                else if (cmd === "beep") {
-                    let audio = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
-                    audio.play();
-                    print("Beep played");
-                }
-
-                // HIDE INPUT
-                else if (cmd === "hide input") {
-                    i.style.display = "none";
-                    print("Input hidden");
-                }
-
-                // SHOW INPUT
-                else if (cmd === "show input") {
-                    i.style.display = "block";
-                    print("Input shown");
-                }
-
-                // FAKE LOGIN
-                else if (cmd === "login") {
-                    print("USERNAME: ADMIN");
-                    print("PASSWORD: ********");
-                    print("LOGIN SUCCESS (SIMULATION)");
-                }
-
-                // FAKE FIREWALL
-                else if (cmd === "firewall") {
-                    print("Firewall: ACTIVE");
-                }
-
-                // SYSTEM INFO FULL
-                else if (cmd === "sysinfo") {
-                    print("OS: " + navigator.platform);
-                    print("Browser: " + navigator.userAgent);
-                    print("Lang: " + navigator.language);
-                }
-
-                // UPTIME
-                else if (cmd === "uptime") {
-                    print("Uptime: " + Math.floor(performance.now() / 1000) + " seconds");
-                }
-
-                // SPEED TEST FAKE
-                else if (cmd === "speed") {
-                    print("Download: " + Math.floor(Math.random() * 100) + " Mbps");
-                }
-
-                // MATRIX EFFECT TOGGLE (simple text spam)
-                else if (cmd === "matrix") {
-                    for (let i = 0; i < 10; i++) {
-                        print(Math.random().toString(2).slice(2));
+                    // HELP
+                    if (lower === "help") {
+                        print("Commands: help, clear, history, calc, echo");
+                        print("storage, save, get, delete");
+                        print("theme green/red/blue/dark");
+                        print("music on/off, volume set");
+                        print("typing speed, typing sound on/off");
+                        print("undo, random, date");
+                        print("device full,ram, cpu, screen, network, battery");
+                        print("history clear, history export");
+                        print("about, system scan");
                     }
-                }
 
-                // EXIT EFFECT
-                else if (cmd === "shutdown") {
-                    print("SYSTEM SHUTTING DOWN...");
-                    setTimeout(() => print("SYSTEM OFFLINE (SIMULATION)"), 1500);
-                }
-
-                // BOOT
-                else if (cmd === "boot") {
-                    print("BOOTING SYSTEM...");
-                    setTimeout(() => print("SYSTEM READY"), 1000);
-                }
-
-                // HELP EXTENDED
-                else if (cmd === "help2") {
-                    print("ADVANCED COMMANDS LOADED");
-                    print("hack, scan wifi, beep, sysinfo, matrix, shutdown");
-                }
-
-                // STORAGE
-                else if (cmd === "storage") {
-                    for (let x in localStorage) {
-                        if (localStorage[x])
-                            print(x + " = " + localStorage[x]);
+                    // CLEAR
+                    else if (lower === "clear") {
+                        t.innerHTML = "";
                     }
-                }
 
-                // SESSION
-                else if (cmd === "session") {
-                    for (let x in sessionStorage) {
-                        if (sessionStorage[x])
-                            print(x + " = " + sessionStorage[x]);
+                    // HISTORY
+                    else if (lower === "history") {
+                        history.forEach(h => print(h));
                     }
-                }
 
-                // CLEAR STORAGE
-                else if (cmd === "clear storage") {
-                    localStorage.clear();
-                    print("Storage cleared!");
-                }
-
-                // DEVICE
-                else if (cmd === "device") {
-                    print("Platform: " + navigator.platform);
-                    print("Cores: " + navigator.hardwareConcurrency);
-                    print("Memory: " + navigator.deviceMemory + "GB");
-                }
-
-                // BROWSER
-                else if (cmd === "browser") {
-                    print(navigator.userAgent);
-                }
-
-                // SCREEN
-                else if (cmd === "screen") {
-                    print(screen.width + " x " + screen.height);
-                }
-
-                // TIME
-                else if (cmd === "time") {
-                    print(new Date().toLocaleTimeString());
-                }
-
-                // DATE
-                else if (cmd === "date") {
-                    print(new Date().toDateString());
-                }
-
-                // BATTERY
-                else if (cmd === "battery") {
-                    if (navigator.getBattery) {
-                        let b = await navigator.getBattery();
-                        print("Battery: " + (b.level * 100) + "%");
-                        print("Charging: " + b.charging);
-                    } else print("Not supported");
-                }
-
-                // NETWORK
-                else if (cmd === "network") {
-                    print("Online: " + navigator.onLine);
-                }
-
-                // LOCATION
-                else if (cmd === "location") {
-                    navigator.geolocation.getCurrentPosition(
-                        pos => {
-                            print("Lat: " + pos.coords.latitude);
-                            print("Long: " + pos.coords.longitude);
-                        },
-                        () => print("Denied")
-                    );
-                }
-
-                // CLIPBOARD
-                else if (cmd === "clipboard") {
-                    try {
-                        let text = await navigator.clipboard.readText();
-                        print(text);
-                    } catch {
-                        print("Denied");
-                    }
-                }
-
-                // HISTORY
-                else if (cmd === "history") {
-                    history.forEach(h => print(h));
-                }
-
-                // CLEAR TERMINAL
-                else if (cmd === "clear") {
-                    t.innerHTML = "";
-                }
-
-                // RELOAD
-                else if (cmd === "reload") {
-                    location.reload();
-                }
-
-                // COOKIES
-                else if (cmd === "cookies") {
-                    print(document.cookie || "No cookies");
-                }
-
-                // URL
-                else if (cmd === "url") {
-                    print(location.href);
-                }
-
-                // TITLE
-                else if (cmd === "title") {
-                    print(document.title);
-                }
-
-                // REFERRER
-                else if (cmd === "referrer") {
-                    print(document.referrer || "None");
-                }
-
-                // ONLINE
-                else if (cmd === "online") {
-                    print(navigator.onLine);
-                }
-
-                // LANGUAGE
-                else if (cmd === "language") {
-                    print(navigator.language);
-                }
-
-                // PLATFORM
-                else if (cmd === "platform") {
-                    print(navigator.platform);
-                }
-
-                // CPU
-                else if (cmd === "cpu") {
-                    print(navigator.hardwareConcurrency + " cores");
-                }
-
-                // MEMORY
-                else if (cmd === "memory") {
-                    print(navigator.deviceMemory + " GB");
-                }
-
-                // FULLSCREEN
-                else if (cmd === "fullscreen") {
-                    document.documentElement.requestFullscreen();
-                }
-
-                // EXIT FULLSCREEN
-                else if (cmd === "exit fullscreen") {
-                    document.exitFullscreen();
-                }
-
-                // RANDOM
-                else if (cmd === "random") {
-                    print(Math.random());
-                }
-
-                // CALC
-                else if (cmd.startsWith("calc")) {
-                    try {
+                    // CALC SAFE
+                    else if (lower.startsWith("calc")) {
                         let exp = cmd.replace("calc ", "");
-                        print(eval(exp));
-                    } catch {
-                        print("Invalid");
+                        if (/^[0-9+\-*/(). ]+$/.test(exp)) {
+                            print(eval(exp));
+                        } else {
+                            print("Invalid expression");
+                        }
                     }
-                }
 
-                // ECHO
-                else if (cmd.startsWith("echo")) {
-                    print(cmd.replace("echo ", ""));
-                }
+                    // ECHO
+                    else if (lower.startsWith("echo")) {
+                        print(cmd.replace("echo ", ""));
+                    }
 
-                // DEFAULT
-                else {
-                    print("Unknown command. Type 'help'");
+                    // STORAGE
+                    else if (lower.startsWith("save")) {
+                        let parts = cmd.split(" ");
+                        localStorage.setItem(parts[1], parts.slice(2).join(" "));
+                        print("Saved!");
+                    }
+
+                    else if (lower.startsWith("get")) {
+                        let key = cmd.split(" ")[1];
+                        print(localStorage.getItem(key) || "Not found");
+                    }
+
+                    else if (lower.startsWith("delete")) {
+                        let key = cmd.split(" ")[1];
+                        localStorage.removeItem(key);
+                        print("Deleted!");
+                    }
+
+                    else if (lower === "storage") {
+                        Object.keys(localStorage).forEach(k => {
+                            print(k + " = " + localStorage.getItem(k));
+                        });
+                    }
+
+                    // THEME
+                    else if (lower.startsWith("theme")) {
+                        let color = lower.split(" ")[1];
+
+                        if (color === "green") document.body.style.color = "#00ff88";
+                        if (color === "red") document.body.style.color = "red";
+                        if (color === "blue") document.body.style.color = "cyan";
+                        if (color === "dark") document.body.style.color = "white";
+
+                        print("Theme changed");
+                    }
+
+                    // MUSIC
+                    else if (lower === "music on") {
+                        if (!music) {
+                            music = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
+                            music.loop = true;
+                            music.volume = volume;
+                            music.play();
+                            print("Music ON");
+                        }
+                    }
+
+                    else if (lower === "music off") {
+                        if (music) {
+                            music.pause();
+                            music = null;
+                            print("Music OFF");
+                        }
+                    }
+
+                    else if (lower.startsWith("volume")) {
+                        let v = parseFloat(lower.split(" ")[2]);
+                        if (!isNaN(v)) {
+                            volume = v;
+                            if (music) music.volume = v;
+                            print("Volume set to " + v);
+                        }
+                    }
+
+                    // ===== TYPING CONTROL =====
+                    else if (lower.startsWith("typing speed")) {
+                        let sp = parseInt(lower.split(" ")[2]);
+                        if (!isNaN(sp)) {
+                            typingSpeed = sp;
+                            print("Typing speed set to " + sp);
+                        }
+                    }
+
+                    else if (lower === "typing sound on") {
+                        typingSound = true;
+                        print("Typing sound ON");
+                    }
+
+                    else if (lower === "typing sound off") {
+                        typingSound = false;
+                        print("Typing sound OFF");
+                    }
+
+                    // UNDO
+                    else if (lower === "undo") {
+                        if (t.lastChild) t.removeChild(t.lastChild);
+                    }
+
+                    // RANDOM
+                    else if (lower === "random") {
+                        print(Math.random());
+                    }
+
+                    // DATE
+                    else if (lower === "date") {
+                        print(new Date().toString());
+                    }
+
+                    // ================= DEVICE FULL INFO =================
+                    else if (lower === "device full") {
+                        print("=== DEVICE INFO ===");
+                        print("Platform: " + navigator.platform);
+                        print("UserAgent: " + navigator.userAgent);
+                        print("Language: " + navigator.language);
+                        print("Online: " + navigator.onLine);
+                        print("Cores: " + navigator.hardwareConcurrency);
+
+                        if (navigator.deviceMemory) {
+                            print("RAM (approx): " + navigator.deviceMemory + " GB");
+                        } else {
+                            print("RAM: Not supported");
+                        }
+                    }
+
+                    // ================= RAM =================
+                    else if (lower === "ram") {
+                        if (navigator.deviceMemory) {
+                            print("RAM: " + navigator.deviceMemory + " GB");
+                        } else {
+                            print("RAM info not available");
+                        }
+                    }
+
+                    // ================= CPU =================
+                    else if (lower === "cpu") {
+                        print("CPU Cores: " + navigator.hardwareConcurrency);
+                    }
+
+                    // ================= SCREEN =================
+                    else if (lower === "screen") {
+                        print("Width: " + screen.width);
+                        print("Height: " + screen.height);
+                    }
+
+                    // ================= NETWORK =================
+                    else if (lower === "network") {
+                        print("Online: " + navigator.onLine);
+                        if (navigator.connection) {
+                            print("Type: " + navigator.connection.effectiveType);
+                        }
+                    }
+
+                    // ================= BATTERY =================
+                    else if (lower === "battery") {
+                        if (navigator.getBattery) {
+                            let b = await navigator.getBattery();
+                            print("Battery: " + (b.level * 100) + "%");
+                            print("Charging: " + b.charging);
+                        } else {
+                            print("Battery API not supported");
+                        }
+                    }
+
+                    // ================= HISTORY CLEAR =================
+                    else if (lower === "history clear") {
+                        history = [];
+                        print("History cleared");
+                    }
+
+                    // ================= HISTORY EXPORT =================
+                    else if (lower === "history export") {
+                        let data = history.join("\n");
+                        navigator.clipboard.writeText(data);
+                        print("History copied to clipboard");
+                    }
+
+                    else if (lower === "about") {
+                        print("Founder of WHITE_CMD: Wendell Tyrone A. Jimenez, 20 years old");
+                        print("Come and visit my Github => https://Wentyrone12.github.io <=");
+
+
+                    }
+
+                    else if (lower === "system scan") {
+                        print("Scanning device.....");
+                        setTimeout(() => {
+                            print("✔ CPU OK");
+                            print("✔ RAM OK");
+                            print("✔ Network OK");
+                            print("✔ Security: ACTIVE");
+                        }, 4500);
+                    }
+
+                    // UNKNOWN
+                    else {
+                        suggest(lower);
+                    }
+
+                } catch {
+                    print("Error executing command");
                 }
 
                 i.value = "";
             }
         });
 
-        function print(txt) {
-            let d = document.createElement("div");
-            d.textContent = txt;
-            t.appendChild(d);
-            t.scrollTop = t.scrollHeight;
+        // SUGGEST
+        function suggest(cmd) {
+            let commands = ["help", "clear", "history", "calc", "echo", "save", "get", "delete", "music on"];
+            let found = commands.find(c => c.includes(cmd));
+            if (found) print("Unknown. Did you mean: " + found + " ?");
+            else print("Unknown command");
         }
     </script>
 
