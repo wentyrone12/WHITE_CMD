@@ -100,7 +100,7 @@
 
             .nametag {
                 position: fixed;
-                top: 60%;
+                bottom: 80vh;
                 left: 50%;
                 transform: translateX(-50%);
                 color: rgb(79, 129, 3);
@@ -144,10 +144,8 @@
 
 <body>
 
-    <div id="terminal">
-        <div class="nametag">Made by Wenxyz</div>
-    </div>
-
+    <div id="terminal"></div>
+    <div class="nametag">Made by Wenxyz</div>
     <input id="commandInput" placeholder="Type command...">
 
     <script>
@@ -1992,7 +1990,9 @@
             }, 400);
         }
 
-        
+        document.addEventListener("contextmenu", function (e) {
+            e.preventDefault();
+        });
 
     </script>
 
