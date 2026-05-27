@@ -48,6 +48,15 @@
             bottom: 0;
         }
 
+        .nametag{
+                position:fixed;
+                top:80%;
+                left:50%;
+                transform: translateX(-50%);
+                color:rgb(79, 129, 3);
+                opacity:0.2;
+            }
+
         /* ================= MOBILE ================= */
         @media (max-width: 1024px) {
 
@@ -87,6 +96,14 @@
                 color: rgb(9, 255, 0);
                 background: rgba(21, 255, 0, 0);
             }
+            .nametag{
+                position:fixed;
+                top:60%;
+                left:50%;
+                transform: translateX(-50%);
+                color:rgb(79, 129, 3);
+                opacity:0.2;
+            }
         }
 
         /* ================= SMALL PHONE ================= */
@@ -107,7 +124,8 @@
 
 <body>
 
-    <div id="terminal"></div>
+    <div id="terminal"><div class="nametag">Made by Wenxyz</div></div>
+
     <input id="commandInput" placeholder="Type command...">
 
     <script>
@@ -119,7 +137,7 @@
         let volume = 1;
 
         // ===== TYPING SETTINGS =====
-        let typingSpeed = 20; // mas mababa = mas mabilis
+        let typingSpeed = 2; // mas mababa = mas mabilis
         let typingQueue = Promise.resolve();
         let typingSound = false;
 
@@ -841,7 +859,7 @@
         };
 
         function bootSequence() {
-            print("Initializing WHITE KALI LINUX........");
+            print("Initializing WHITE_KALI_LINUX........");
             print("Loading system modules...");
             print("Connecting neural interface...");
             print("✔ SYSTEM READY");
