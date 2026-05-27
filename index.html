@@ -48,14 +48,14 @@
             bottom: 0;
         }
 
-        .nametag{
-                position:fixed;
-                top:80%;
-                left:50%;
-                transform: translateX(-50%);
-                color:rgb(79, 129, 3);
-                opacity:0.2;
-            }
+        .nametag {
+            position: fixed;
+            top: 80%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgb(79, 129, 3);
+            opacity: 0.6;
+        }
 
         /* ================= MOBILE ================= */
         @media (max-width: 1024px) {
@@ -73,13 +73,13 @@
                 color: #00ff88;
                 font-family: monospace;
                 display: flex;
-                overflow: y;
+                overflow-y: auto;
                 flex-direction: column;
             }
 
             #terminal {
                 font-size: 38px;
-                /* mas malaki sa phone */
+                overflow-y: auto;
                 padding: 10px;
             }
 
@@ -92,17 +92,13 @@
                 padding: 12px;
             }
 
-            input:focus {
-                color: rgb(9, 255, 0);
-                background: rgba(21, 255, 0, 0);
-            }
-            .nametag{
-                position:fixed;
-                top:60%;
-                left:50%;
+            .nametag {
+                position: fixed;
+                top: 60%;
+                left: 50%;
                 transform: translateX(-50%);
-                color:rgb(79, 129, 3);
-                opacity:0.2;
+                color: rgb(79, 129, 3);
+                opacity: 0.6;
             }
         }
 
@@ -110,13 +106,18 @@
         @media (max-width: 480px) {
 
             #terminal {
-                font-size: 20px;
-                /* readable talaga */
+                font-size: 38px;
+                overflow: auto;
+                padding: 10px;
             }
 
             input {
-                font-size: 22px;
-                height: 70px;
+                background: rgba(0, 0, 0, 0.178);
+                position: fixed;
+                bottom: 20px;
+                height: 100px;
+                font-size: 30px;
+                padding: 12px;
             }
         }
     </style>
@@ -124,7 +125,9 @@
 
 <body>
 
-    <div id="terminal"><div class="nametag">Made by Wenxyz</div></div>
+    <div id="terminal">
+        <div class="nametag">Made by Wenxyz</div>
+    </div>
 
     <input id="commandInput" placeholder="Type command...">
 
@@ -200,12 +203,25 @@
                         print("theme green/red/blue/dark");
                         print("music on/off, volume set");
                         print("typing speed, typing sound on/off");
-                        print("undo, random, date");
+                        print("undo, random, date, clock, weather");
                         print("device full, ram, cpu, screen, network, battery");
                         print("subnet, profile, clear storage");
-                        print("system scan, opensite, search");
-                        print("secretsites, timezone");
-                        print("about, system scan, profile");
+                        print("system scan,files, opensite, search");
+                        print("copy, gen password, open camera, vibrate, speak, joke");
+                        print("flip coin, roll dice, qr, battery live, screenshot, countdown, stopwatch ");
+                        print("random color, map, uptime, virus scan, internet speed, ");
+                        print("note, shownote, banner, java, touch points, color depth");
+                        print("browser, platform, pixed depth, window position, outer siez, path, ");
+                        print("port, hash, secure, modified, charset, show cookies, domain, visibility, is fullscreen,hex");
+                        print("password, downlink, ping, save data, mic check, camera check, notification, enable notification, test notification,");
+                        print("storage support, session support, url info, memory test, device type, os, refresh");
+                        print("refresh, back, forward, print page, page size, diagnostic, generate uuid");
+                        print("encode, decode, cmd hash, ascii clock, temperature");
+                        print("gpu, battery health, clean cache, check date, hex color, preview color, dump color, ");
+                        print("alert, speak fast, speak slow,otp,dpi, iso date, ");
+                        print("mobile check, matrix, quote, open ai, milliseconds,  ");
+                        print("internet check,favicon,rand,beep,random image,params,memory usage ,secretsites, timezone");
+                        print("about,cyber mode, system scan, profile");
                     }
 
                     // CLEAR
@@ -267,6 +283,969 @@
                         if (color === "dark") document.body.style.color = "white";
 
                         print("Theme changed");
+                    }
+
+                    // ================= 1. COPY TEXT =================
+                    else if (lower.startsWith("copy ")) {
+
+                        let text = cmd.replace("copy ", "");
+
+                        navigator.clipboard.writeText(text);
+
+                        print("📋 Copied to clipboard");
+
+                    }
+
+                    // ================= 2. GENERATE PASSWORD =================
+                    else if (lower === "gen password") {
+
+                        let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$";
+                        let pass = "";
+
+                        for (let i = 0; i < 14; i++) {
+                            pass += chars[Math.floor(Math.random() * chars.length)];
+                        }
+
+                        print("🔐 Generated Password:");
+                        print(pass);
+
+                    }
+
+                    // ================= 3. OPEN CAMERA =================
+                    else if (lower === "open camera") {
+
+                        navigator.mediaDevices.getUserMedia({ video: true })
+                            .then(stream => {
+
+                                let video = document.createElement("video");
+
+                                video.srcObject = stream;
+                                video.autoplay = true;
+                                video.style.width = "300px";
+
+                                t.appendChild(video);
+
+                                print("📷 Camera opened");
+
+                            })
+                            .catch(() => {
+                                print("❌ Camera access denied");
+                            });
+
+                    }
+
+                    // ================= 4. VIBRATION =================
+                    else if (lower === "vibrate") {
+
+                        navigator.vibrate(1000);
+
+                        print("📳 Device vibrating");
+
+                    }
+
+                    // ================= 5. SPEAK TEXT =================
+                    else if (lower.startsWith("speak ")) {
+
+                        let text = cmd.replace("speak ", "");
+
+                        let speech = new SpeechSynthesisUtterance(text);
+
+                        speechSynthesis.speak(speech);
+
+                        print("🗣 Speaking...");
+
+                    }
+
+                    // ================= 6. RANDOM JOKE =================
+                    else if (lower === "joke") {
+
+                        let jokes = [
+                            "Why do programmers hate nature? Too many bugs.",
+                            "JavaScript is not broken. It's misunderstood.",
+                            "Programmer: A machine that turns coffee into code."
+                        ];
+
+                        print(jokes[Math.floor(Math.random() * jokes.length)]);
+
+                    }
+
+                    // ================= 7. FLIP COIN =================
+                    else if (lower === "flip coin") {
+
+                        let result = Math.random() < 0.5 ? "HEADS" : "TAILS";
+
+                        print("🪙 " + result);
+
+                    }
+
+                    // ================= 8. ROLL DICE =================
+                    else if (lower === "roll dice") {
+
+                        let dice = Math.floor(Math.random() * 6) + 1;
+
+                        print("🎲 Dice: " + dice);
+
+                    }
+
+                    // ================= 9. GENERATE QR =================
+                    else if (lower.startsWith("qr ")) {
+
+                        let text = encodeURIComponent(cmd.replace("qr ", ""));
+
+                        let img = document.createElement("img");
+
+                        img.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + text;
+
+                        t.appendChild(img);
+
+                        print("📱 QR Generated");
+
+                    }
+
+                    // ================= 10. BATTERY LIVE =================
+                    else if (lower === "battery live") {
+
+                        navigator.getBattery().then(b => {
+
+                            print("🔋 Battery: " + (b.level * 100) + "%");
+
+                            setInterval(() => {
+                                print("Battery: " + (b.level * 100) + "%");
+                            }, 10000);
+
+                        });
+
+                    }
+
+                    // ================= 11. SCREENSHOT PAGE =================
+                    else if (lower === "screenshot") {
+
+                        html2canvas(document.body).then(canvas => {
+
+                            let a = document.createElement("a");
+
+                            a.download = "screenshot.png";
+                            a.href = canvas.toDataURL();
+
+                            a.click();
+
+                            print("📸 Screenshot downloaded");
+
+                        });
+
+                    }
+
+                    // ================= 12. COUNTDOWN =================
+                    else if (lower.startsWith("countdown ")) {
+
+                        let sec = parseInt(cmd.replace("countdown ", ""));
+
+                        let interval = setInterval(() => {
+
+                            print("⏳ " + sec);
+
+                            sec--;
+
+                            if (sec < 0) {
+                                clearInterval(interval);
+                                print("⏰ TIME UP");
+                            }
+
+                        }, 1000);
+
+                    }
+
+                    // ================= 13. STOPWATCH =================
+                    else if (lower === "stopwatch") {
+
+                        let sec = 0;
+
+                        setInterval(() => {
+
+                            sec++;
+
+                            print("⏱ " + sec + " sec");
+
+                        }, 1000);
+
+                    }
+
+                    // ================= 14. COLOR GENERATOR =================
+                    else if (lower === "random color") {
+
+                        let color = "#" + Math.floor(Math.random() * 16777215).toString(16);
+
+                        document.body.style.color = color;
+
+                        print("🎨 New Color: " + color);
+
+                    }
+
+                    // ================= 15. OPEN GOOGLE MAP =================
+                    else if (lower.startsWith("map ")) {
+
+                        let place = encodeURIComponent(cmd.replace("map ", ""));
+
+                        window.open("https://www.google.com/maps/search/" + place);
+
+                        print("🗺 Opening map...");
+
+                    }
+
+                    // ================= 16. DEVICE UPTIME =================
+                    else if (lower === "uptime") {
+
+                        print("⏳ Page active for:");
+                        print(Math.floor(performance.now() / 1000) + " seconds");
+
+                    }
+
+                    // ================= 17. FAKE VIRUS SCAN =================
+                    else if (lower === "virus scan") {
+
+                        print("🛡 Scanning system...");
+
+                        setTimeout(() => print("Checking files..."), 1000);
+                        setTimeout(() => print("Checking memory..."), 2000);
+                        setTimeout(() => print("✔ No threats detected"), 3500);
+
+                    }
+
+                    // ================= 18. INTERNET SPEED TEST =================
+                    else if (lower === "internet speed") {
+
+                        let start = performance.now();
+
+                        fetch("https://jsonplaceholder.typicode.com/posts")
+                            .then(() => {
+
+                                let end = performance.now();
+
+                                print("🌐 Approx Speed:");
+                                print((end - start).toFixed(0) + " ms latency");
+
+                            });
+
+                    }
+
+                    // ================= 19. NOTES APP =================
+                    else if (lower.startsWith("note ")) {
+
+                        let note = cmd.replace("note ", "");
+
+                        localStorage.setItem("note", note);
+
+                        print("📝 Note saved");
+
+                    }
+
+                    else if (lower === "show note") {
+
+                        print(localStorage.getItem("note") || "No note saved");
+
+                    }
+
+                    // ================= 20. ASCII BANNER =================
+                    else if (lower === "banner") {
+
+                        print("██╗    ██╗██████╗  █████╗ ███╗   ██╗██╗  ██╗");
+                        print("██║    ██║██╔══██╗██╔══██╗████╗  ██║██║ ██╔╝");
+                        print("██║ █╗ ██║██████╔╝███████║██╔██╗ ██║█████╔╝ ");
+                        print("██║███╗██║██╔══██╗██╔══██║██║╚██╗██║██╔═██╗ ");
+                        print("╚███╔███╔╝██████╔╝██║  ██║██║ ╚████║██║  ██╗");
+                        print(" ╚══╝╚══╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝");
+
+                    }
+
+                    // ================= 1. DEVICE NAME =================
+                    else if (lower === "device name") {
+
+                        print("🖥 Device Platform: " + navigator.platform);
+
+                    }
+
+                    // ================= 2. BROWSER NAME =================
+                    else if (lower === "browser") {
+
+                        print("🌐 Browser Info:");
+                        print(navigator.userAgent);
+
+                    }
+
+                    // ================= 3. CHECK JAVA =================
+                    else if (lower === "java") {
+
+                        print("☕ Java Enabled: " + navigator.javaEnabled());
+
+                    }
+
+                    // ================= 4. MAX TOUCH POINTS =================
+                    else if (lower === "touch points") {
+
+                        print("👆 Max Touch Points: " + navigator.maxTouchPoints);
+
+                    }
+
+                    // ================= 5. COLOR DEPTH =================
+                    else if (lower === "color depth") {
+
+                        print("🎨 Color Depth: " + screen.colorDepth);
+
+                    }
+
+                    // ================= 6. PIXEL DEPTH =================
+                    else if (lower === "pixel depth") {
+
+                        print("🖼 Pixel Depth: " + screen.pixelDepth);
+
+                    }
+
+                    // ================= 7. WINDOW POSITION =================
+                    else if (lower === "window position") {
+
+                        print("X: " + window.screenX);
+                        print("Y: " + window.screenY);
+
+                    }
+
+                    // ================= 8. WINDOW OUTER SIZE =================
+                    else if (lower === "outer size") {
+
+                        print("Width: " + window.outerWidth);
+                        print("Height: " + window.outerHeight);
+
+                    }
+
+                    // ================= 9. CURRENT PATH =================
+                    else if (lower === "path") {
+
+                        print(window.location.pathname);
+
+                    }
+
+                    // ================= 10. PORT INFO =================
+                    else if (lower === "port") {
+
+                        print(window.location.port || "Default Port");
+
+                    }
+
+                    // ================= 11. HASH INFO =================
+                    else if (lower === "hash") {
+
+                        print(window.location.hash || "No hash");
+
+                    }
+
+                    // ================= 12. CHECK HTTPS =================
+                    else if (lower === "secure") {
+
+                        print(location.protocol === "https:" ? "🔒 Secure HTTPS" : "❌ Not Secure");
+
+                    }
+
+                    // ================= 13. LAST MODIFIED =================
+                    else if (lower === "modified") {
+
+                        print("📅 Last Modified:");
+                        print(document.lastModified);
+
+                    }
+
+                    // ================= 14. CHARACTER SET =================
+                    else if (lower === "charset") {
+
+                        print("🔤 Charset: " + document.characterSet);
+
+                    }
+
+                    // ================= 15. PAGE COOKIES =================
+                    else if (lower === "show cookies") {
+
+                        print(document.cookie || "No cookies");
+
+                    }
+
+                    // ================= 16. DOMAIN =================
+                    else if (lower === "domain") {
+
+                        print(document.domain);
+
+                    }
+
+                    // ================= 17. PAGE VISIBILITY =================
+                    else if (lower === "visibility") {
+
+                        print(document.visibilityState);
+
+                    }
+
+                    // ================= 18. CHECK FULLSCREEN =================
+                    else if (lower === "is fullscreen") {
+
+                        print(document.fullscreenElement ? "YES" : "NO");
+
+                    }
+
+                    // ================= 19. RANDOM HEX =================
+                    else if (lower === "hex") {
+
+                        print("#" + Math.floor(Math.random() * 16777215).toString(16));
+
+                    }
+
+                    // ================= 20. RANDOM PASSWORD =================
+                    else if (lower === "password") {
+
+                        let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+                        let pass = "";
+
+                        for (let i = 0; i < 16; i++) {
+                            pass += chars[Math.floor(Math.random() * chars.length)];
+                        }
+
+                        print("🔐 " + pass);
+
+                    }
+
+                    // ================= 21. NETWORK DOWNLINK =================
+                    else if (lower === "downlink") {
+
+                        if (navigator.connection) {
+                            print("⬇ Speed: " + navigator.connection.downlink + " Mbps");
+                        } else {
+                            print("Not supported");
+                        }
+
+                    }
+
+                    // ================= 22. NETWORK RTT =================
+                    else if (lower === "ping") {
+
+                        if (navigator.connection) {
+                            print("📡 RTT: " + navigator.connection.rtt + " ms");
+                        } else {
+                            print("Not supported");
+                        }
+
+                    }
+
+                    // ================= 23. SAVE DATA MODE =================
+                    else if (lower === "save data") {
+
+                        if (navigator.connection) {
+                            print("💾 Save Data: " + navigator.connection.saveData);
+                        }
+
+                    }
+
+                    // ================= 24. CHECK MICROPHONE =================
+                    else if (lower === "mic check") {
+
+                        navigator.mediaDevices.getUserMedia({ audio: true })
+                            .then(() => print("🎤 Microphone Available"))
+                            .catch(() => print("❌ Microphone Blocked"));
+
+                    }
+
+                    // ================= 25. CHECK CAMERA =================
+                    else if (lower === "camera check") {
+
+                        navigator.mediaDevices.getUserMedia({ video: true })
+                            .then(() => print("📷 Camera Available"))
+                            .catch(() => print("❌ Camera Blocked"));
+
+                    }
+
+                    // ================= 26. NOTIFICATION PERMISSION =================
+                    else if (lower === "notifications") {
+
+                        print("🔔 Notification Permission: " + Notification.permission);
+
+                    }
+
+                    // ================= 27. REQUEST NOTIFICATION =================
+                    else if (lower === "enable notifications") {
+
+                        Notification.requestPermission().then(p => {
+                            print("Permission: " + p);
+                        });
+
+                    }
+
+                    // ================= 28. SHOW NOTIFICATION =================
+                    else if (lower === "test notification") {
+
+                        new Notification("WBANK OS", {
+                            body: "Notification system works ✔"
+                        });
+
+                    }
+
+                    // ================= 29. CHECK LOCAL STORAGE =================
+                    else if (lower === "storage support") {
+
+                        print(typeof (Storage) !== "undefined"
+                            ? "✔ LocalStorage Supported"
+                            : "❌ Not Supported");
+
+                    }
+
+                    // ================= 30. CHECK SESSION STORAGE =================
+                    else if (lower === "session support") {
+
+                        print(typeof (sessionStorage) !== "undefined"
+                            ? "✔ SessionStorage Supported"
+                            : "❌ Not Supported");
+
+                    }
+
+                    // ================= 31. SHOW ALL URL INFO =================
+                    else if (lower === "url info") {
+
+                        print("Href: " + location.href);
+                        print("Host: " + location.host);
+                        print("Hostname: " + location.hostname);
+                        print("Protocol: " + location.protocol);
+
+                    }
+
+                    // ================= 32. MEMORY TEST =================
+                    else if (lower === "memory test") {
+
+                        let arr = [];
+
+                        for (let i = 0; i < 100000; i++) {
+                            arr.push(i);
+                        }
+
+                        print("💾 Memory allocation test complete");
+
+                    }
+
+                    // ================= 33. DEVICE TYPE =================
+                    else if (lower === "device type") {
+
+                        let ua = navigator.userAgent;
+
+                        if (/mobile/i.test(ua)) {
+                            print("📱 Mobile Device");
+                        } else {
+                            print("🖥 Desktop Device");
+                        }
+
+                    }
+
+                    // ================= 34. OS DETECTION =================
+                    else if (lower === "os") {
+
+                        let ua = navigator.userAgent;
+
+                        if (ua.includes("Win")) print("🖥 Windows");
+                        else if (ua.includes("Android")) print("📱 Android");
+                        else if (ua.includes("iPhone")) print("🍎 iPhone");
+                        else if (ua.includes("Mac")) print("💻 MacOS");
+                        else print("Unknown OS");
+
+                    }
+
+                    // ================= 35. REFRESH PAGE =================
+                    else if (lower === "refresh") {
+
+                        location.reload();
+
+                    }
+
+                    // ================= 36. GO BACK =================
+                    else if (lower === "back") {
+
+                        history.back();
+
+                    }
+
+                    // ================= 37. GO FORWARD =================
+                    else if (lower === "forward") {
+
+                        history.forward();
+
+                    }
+
+                    // ================= 38. PRINT PAGE =================
+                    else if (lower === "print page") {
+
+                        window.print();
+
+                    }
+
+                    // ================= 39. PAGE SOURCE SIZE =================
+                    else if (lower === "page size") {
+
+                        print("📄 HTML Length: " + document.documentElement.innerHTML.length);
+
+                    }
+
+                    // ================= 40. SYSTEM DIAGNOSTIC =================
+                    else if (lower === "diagnostic") {
+
+                        print("============ WHITE OS DIAGNOSTIC ============");
+
+                        print("Platform: " + navigator.platform);
+                        print("Online: " + navigator.onLine);
+                        print("Language: " + navigator.language);
+                        print("CPU Cores: " + navigator.hardwareConcurrency);
+                        print("RAM: " + (navigator.deviceMemory || "Unknown") + " GB");
+                        print("Resolution: " + screen.width + "x" + screen.height);
+                        print("Browser: " + navigator.userAgent);
+
+                        print("✔ Diagnostic Complete");
+
+                    }
+
+                    // ================= 1. GENERATE UUID =================
+                    else if (lower === "generate uuid") {
+                        print("🆔 " + crypto.randomUUID());
+                    }
+
+                    // ================= 2. BASE64 ENCODE =================
+                    else if (lower.startsWith("encode ")) {
+
+                        let txt = cmd.replace("encode ", "");
+
+                        print(btoa(txt));
+
+                    }
+
+                    // ================= 3. BASE64 DECODE =================
+                    else if (lower.startsWith("decode ")) {
+
+                        let txt = cmd.replace("decode ", "");
+
+                        try {
+                            print(atob(txt));
+                        } catch {
+                            print("❌ Invalid Base64");
+                        }
+
+                    }
+
+                    // ================= 4. SHA-256 HASH =================
+                    else if (lower.startsWith("cmd hash ")) {
+
+                        let txt = cmd.replace("cmd hash ", "");
+
+                        crypto.subtle.digest("SHA-256", new TextEncoder().encode(txt))
+                            .then(buf => {
+
+                                let hash = Array.from(new Uint8Array(buf))
+                                    .map(b => b.toString(16).padStart(2, "0"))
+                                    .join("");
+
+                                print("🔐 " + hash);
+
+                            });
+
+                    }
+
+                    // ================= 5. RANDOM FACT =================
+                    else if (lower === "tech fact") {
+
+                        let facts = [
+                            "The first website is still online.",
+                            "Linux powers most servers worldwide.",
+                            "The first computer bug was a moth."
+                        ];
+
+                        print(facts[Math.floor(Math.random() * facts.length)]);
+
+                    }
+
+                    // ================= 6. ASCII CLOCK =================
+                    else if (lower === "ascii clock") {
+
+                        setInterval(() => {
+                            print("🕒 " + new Date().toLocaleTimeString());
+                        }, 1000);
+
+                    }
+
+                    // ================= 7. SYSTEM TEMP SIM =================
+                    else if (lower === "temperature") {
+
+                        let temp = Math.floor(Math.random() * 20) + 35;
+
+                        print("🌡 CPU Temp: " + temp + "°C");
+
+                    }
+
+                    // ================= 8. GPU INFO =================
+                    else if (lower === "gpu") {
+
+                        let canvas = document.createElement("canvas");
+                        let gl = canvas.getContext("webgl");
+
+                        if (gl) {
+
+                            let debug = gl.getExtension("WEBGL_debug_renderer_info");
+
+                            print("🎮 GPU:");
+                            print(gl.getParameter(debug.UNMASKED_RENDERER_WEBGL));
+
+                        } else {
+
+                            print("❌ WebGL not supported");
+
+                        }
+
+                    }
+
+                    // ================= 13. DEVICE BATTERY HEALTH =================
+                    else if (lower === "battery health") {
+
+                        navigator.getBattery().then(b => {
+
+                            if (b.level > 0.8) print("🔋 Excellent");
+                            else if (b.level > 0.5) print("🟡 Good");
+                            else print("🔴 Low");
+
+                        });
+
+                    }
+
+                    // ================= 14. STORAGE CLEANER =================
+                    else if (lower === "clean cache") {
+
+                        localStorage.clear();
+                        sessionStorage.clear();
+
+                        print("🧹 Cache cleaned");
+
+                    }
+                    // ================= 18. CURRENT YEAR =================
+                    else if (lower === "check date") {
+                        print("📅 " + (new Date().getMonth() + 1) + "/" + new Date().getDate() + "/" + new Date().getFullYear());
+
+                    }
+                    // ================= 22. RANDOM HEX COLOR =================
+                    else if (lower === "hex color") {
+
+                        let color = "#" + Math.floor(Math.random() * 16777215).toString(16);
+
+                        print(color);
+
+                    }
+
+                    // ================= 23. COLOR PREVIEW =================
+                    else if (lower === "preview color") {
+
+                        let color = "#" + Math.floor(Math.random() * 16777215).toString(16);
+
+                        document.body.style.background = color;
+
+                        print("🎨 " + color);
+
+                    }
+
+                    // ================= 24. SHOW ALL LOCALSTORAGE =================
+                    else if (lower === "dump storage") {
+
+                        for (let i = 0; i < localStorage.length; i++) {
+
+                            let key = localStorage.key(i);
+
+                            print(key + " = " + localStorage.getItem(key));
+
+                        }
+
+                    }
+
+                    // ================= 25. CREATE ALERT =================
+                    else if (lower.startsWith("alert ")) {
+
+                        alert(cmd.replace("alert ", ""));
+
+                    }
+
+                    // ================= 26. SPEECH RATE =================
+                    else if (lower.startsWith("speak fast ")) {
+
+                        let speech = new SpeechSynthesisUtterance(cmd.replace("speak fast ", ""));
+
+                        speech.rate = 2;
+
+                        speechSynthesis.speak(speech);
+
+                    }
+
+                    // ================= 27. SPEECH SLOW =================
+                    else if (lower.startsWith("speak slow ")) {
+
+                        let speech = new SpeechSynthesisUtterance(cmd.replace("speak slow ", ""));
+
+                        speech.rate = 0.7;
+
+                        speechSynthesis.speak(speech);
+
+                    }
+
+                    // ================= 28. GENERATE OTP =================
+                    else if (lower === "otp") {
+
+                        print("🔐 OTP: " + Math.floor(100000 + Math.random() * 900000));
+
+                    }
+
+                    // ================= 30. DEVICE DPI =================
+                    else if (lower === "dpi") {
+
+                        print(window.devicePixelRatio * 96 + " DPI");
+
+                    }
+
+                    // ================= 31. SHOW DATE ISO =================
+                    else if (lower === "iso date") {
+
+                        print(new Date().toISOString());
+
+                    }
+
+                    // ================= 32. CHECK MOBILE =================
+                    else if (lower === "mobile check") {
+
+                        print(/Mobi|Android/i.test(navigator.userAgent)
+                            ? "📱 Mobile"
+                            : "🖥 Desktop");
+
+                    }
+
+                    // ================= 34. MATRIX EFFECT =================
+                    else if (lower === "matrix") {
+
+                        setInterval(() => {
+
+                            print(Math.random().toString(36).substring(2));
+
+                        }, 100);
+
+                    }
+
+                    // ================= 35. RANDOM QUOTE =================
+                    else if (lower === "quote") {
+
+                        let q = [
+                            "Code never lies.",
+                            "Stay hungry. Stay foolish.",
+                            "Small progress is still progress."
+                        ];
+
+                        print(q[Math.floor(Math.random() * q.length)]);
+
+                    }
+
+                    // ================= 36. OPEN CHATGPT =================
+                    else if (lower === "open ai") {
+
+                        window.open("https://chatgpt.com");
+
+                    }
+                    // ================= 39. CURRENT MILLISECONDS =================
+                    else if (lower === "milliseconds") {
+
+                        print(Date.now());
+
+                    }
+
+                    // ================= 40. INTERNET CHECK =================
+                    else if (lower === "internet check") {
+
+                        fetch("https://jsonplaceholder.typicode.com/posts/1")
+                            .then(() => print("🌐 Internet OK"))
+                            .catch(() => print("❌ No Internet"));
+
+                    }
+
+                    // ================= 41. SHOW FAVICON =================
+                    else if (lower === "favicon") {
+
+                        let img = document.createElement("img");
+
+                        img.src = "/favicon.ico";
+
+                        img.style.width = "64px";
+
+                        t.appendChild(img);
+
+                    }
+
+                    // ================= 42. RANDOM NUMBER RANGE =================
+                    else if (lower.startsWith("rand ")) {
+
+                        let parts = lower.split(" ");
+
+                        let min = parseInt(parts[1]);
+                        let max = parseInt(parts[2]);
+
+                        print(Math.floor(Math.random() * (max - min + 1)) + min);
+
+                    }
+
+                    // ================= 44. SYSTEM BEEP =================
+                    else if (lower === "beep") {
+
+                        let ctx = new AudioContext();
+
+                        let osc = ctx.createOscillator();
+
+                        osc.connect(ctx.destination);
+
+                        osc.start();
+
+                        setTimeout(() => osc.stop(), 200);
+
+                    }
+                    // ================= 46. SHOW RANDOM IMAGE =================
+                    else if (lower === "random image") {
+
+                        let img = document.createElement("img");
+
+                        img.src = "https://picsum.photos/300";
+
+                        t.appendChild(img);
+
+                    }
+
+                    // ================= 47. SHOW CURRENT URL PARAMS =================
+                    else if (lower === "params") {
+
+                        print(location.search || "No params");
+
+                    }
+
+                    // ================= 48. MEMORY USAGE ESTIMATE =================
+                    else if (lower === "memory usage") {
+
+                        if (performance.memory) {
+
+                            print("Used JS Heap: " +
+                                Math.round(performance.memory.usedJSHeapSize / 1048576)
+                                + " MB");
+
+                        } else {
+
+                            print("Not supported");
+
+                        }
+
+                    }
+
+                    // ================= 50. CYBER MODE =================
+                    else if (lower === "cyber mode") {
+
+                        document.body.style.background = "black";
+                        document.body.style.color = "#00ff00";
+
+                        print("🟢 CYBER MODE ENABLED");
+
                     }
 
                     // MUSIC
@@ -558,7 +1537,7 @@
 
                     else if (lower === "opensite") {
                         print("Please choose a site to open");
-                        print("open yt, open fb, open yt");
+                        print("open yt, open fb, open ig");
                     }
 
                     else if (lower === "open yt") {
@@ -646,11 +1625,21 @@
 
                     }
 
+                    else if (lower === "profile") {
+                        print("Please Type: profile full name, YYYY-MM-DD");
+                        print("=================================================================");
+                        print("Example: profile wendell tyrone a. jimenez, 2006-05-12 ");
+                        print("=================================================================");
+                    }
+
                     else if (lower.startsWith("profile")) {
                         let parts = cmd.replace("profile ", "").split(",");
 
                         if (parts.length < 2) {
-                            print("Usage: profile Full Name, YYYY-MM-DD");
+                            print("Please Type: profile full name, YYYY-MM-DD");
+                            print("=================================================================");
+                            print("Example: profile wendell tyrone, 2006-05-12 ");
+                            print("=================================================================");
                         } else {
                             let name = parts[0].trim();
                             let birth = parts[1].trim();
@@ -702,6 +1691,31 @@
                         }, 800);
                     }
 
+                    else if (lower === "performance") {
+
+                        print("=== SYSTEM PERFORMANCE ===");
+
+                        print("CPU Cores: " + navigator.hardwareConcurrency);
+
+                        if (navigator.deviceMemory) {
+                            print("RAM: " + navigator.deviceMemory + " GB");
+                        }
+
+                        print("Resolution: " + screen.width + "x" + screen.height);
+                        print("Online: " + navigator.onLine);
+
+                    }
+
+                    else if (lower === "files") {
+
+                        print("=== FILE SYSTEM ===");
+
+                        Object.keys(localStorage).forEach(f => {
+                            print("📄 " + f);
+                        });
+
+                    }
+
                     else if (lower === "timezone") {
 
                         print("🌍 AVAILABLE TIMEZONES:");
@@ -720,6 +1734,27 @@
                         print("time germany");
                         print("time brazil");
                         print("time south africa");
+
+                    }
+
+                    else if (lower === "clock") {
+
+                        print("🕒 Live Clock Started");
+
+                        setInterval(() => {
+
+                            let now = new Date();
+
+                            print(now.toLocaleTimeString());
+
+                        }, 1000);
+                    }
+
+                    else if (lower.startsWith("weather ")) {
+
+                        let city = cmd.replace("weather ", "");
+
+                        print("Searching weather for " + city + "...");
 
                     }
 
@@ -848,7 +1883,7 @@
 
         // SUGGEST
         function suggest(cmd) {
-            let commands = ["help", "storage", "history", "calc", "echo", "save", "get", "delete", "music on"];
+            let commands = ["help", "storage", "history", "performance", "subnet", "save", "check date", "delete", "music on"];
             let found = commands.find(c => c.includes(cmd));
             if (found) print("Error. Did you mean: " + found + " ?");
             else print("Error command");
@@ -859,11 +1894,16 @@
         };
 
         function bootSequence() {
-            print("Initializing WHITE_KALI_LINUX........");
-            print("Loading system modules...");
-            print("Connecting neural interface...");
-            print("✔ SYSTEM READY");
-            print("Type 'help' to start");
+            print("WHITE OS v3.0 Initializing.........");
+            print("Loading modules..........");
+            print("Checking security.........");
+            print("Launching terminal...........");
+            print("SYSTEM READY ✔");
+            print("=================================================")
+            print("Please choice......");
+            print("🔴 help ,storage ,performance ,subnet ,check date ,music on ,banner ,diagnostic ,about 🔴");
+            print("=================================================")
+
         }
 
         function generatePasswords(name, birth) {
@@ -883,7 +1923,7 @@
                 n.charAt(0).toUpperCase() + n.slice(1) + year,
                 year + n + "2026",
                 n + "X" + Math.floor(Math.random() * 999),
-                "WBANK" + n.slice(0, 3) + year
+                "xyz" + n.slice(0, 3) + year
             ];
 
             print("=== PASSWORD IDEAS ===");
@@ -903,6 +1943,8 @@
         document.addEventListener("contextmenu", function (e) {
             e.preventDefault();
         });
+
+
     </script>
 
 </body>
