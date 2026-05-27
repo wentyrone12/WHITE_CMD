@@ -137,7 +137,7 @@
         let volume = 1;
 
         // ===== TYPING SETTINGS =====
-        let typingSpeed = 2; // mas mababa = mas mabilis
+        let typingSpeed = 0; // mas mababa = mas mabilis
         let typingQueue = Promise.resolve();
         let typingSound = false;
 
@@ -899,27 +899,6 @@
                 }
             }, 400);
         }
-
-        setInterval(() => {
-            let dot = document.createElement("div");
-            dot.textContent = Math.random() > 0.5 ? "1" : "0";
-            dot.style.position = "fixed";
-            dot.style.left = Math.random() * 100 + "vw";
-            dot.style.top = "0px";
-            dot.style.color = "#00ff88";
-            dot.style.opacity = "0.3";
-            dot.style.fontSize = "40px";
-            document.body.appendChild(dot);
-
-            let fall = setInterval(() => {
-                dot.style.top = dot.offsetTop + 5 + "px";
-                if (dot.offsetTop > window.innerHeight) {
-                    clearInterval(fall);
-                    dot.remove();
-                }
-            }, 50);
-        }, 200);
-
 
         document.addEventListener("contextmenu", function (e) {
             e.preventDefault();
