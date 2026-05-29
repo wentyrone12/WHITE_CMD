@@ -1682,6 +1682,344 @@
                         print("=================================================================");
                     }
 
+
+                    // ================= ULTRA DEVICE PERFORMANCE =================
+                    else if (lower === "device performance") {
+
+                        print("================================================");
+                        print("⚡ WHITE_CMD ULTRA DEVICE PERFORMANCE SCAN");
+                        print("================================================");
+
+                        // ================= BASIC =================
+                        print("📱 DEVICE INFORMATION");
+                        print("------------------------------------------------");
+
+                        print("Platform: " + navigator.platform);
+                        print("User Agent: " + navigator.userAgent);
+                        print("Language: " + navigator.language);
+                        print("Languages: " + navigator.languages.join(", "));
+                        print("Online: " + navigator.onLine);
+                        print("Cookies Enabled: " + navigator.cookieEnabled);
+                        print("Java Enabled: " + navigator.javaEnabled());
+                        print("Timezone: " + Intl.DateTimeFormat().resolvedOptions().timeZone);
+
+                        // ================= CPU =================
+                        print("================================================");
+                        print("🧠 CPU INFORMATION");
+                        print("------------------------------------------------");
+
+                        print("Logical CPU Cores: " + navigator.hardwareConcurrency);
+
+                        if (navigator.hardwareConcurrency >= 8) {
+                            print("CPU Status: HIGH PERFORMANCE");
+                        } else if (navigator.hardwareConcurrency >= 4) {
+                            print("CPU Status: MEDIUM PERFORMANCE");
+                        } else {
+                            print("CPU Status: LOW PERFORMANCE");
+                        }
+
+                        // ================= RAM =================
+                        print("================================================");
+                        print("💾 RAM INFORMATION");
+                        print("------------------------------------------------");
+
+                        if (navigator.deviceMemory) {
+
+                            print("Installed RAM: " + navigator.deviceMemory + " GB");
+
+                            if (navigator.deviceMemory >= 8) {
+                                print("RAM Status: HIGH END");
+                            } else if (navigator.deviceMemory >= 4) {
+                                print("RAM Status: GOOD");
+                            } else {
+                                print("RAM Status: LOW");
+                            }
+
+                        } else {
+
+                            print("RAM Detection Not Supported");
+
+                        }
+
+                        // ================= ROM STORAGE =================
+                        print("================================================");
+                        print("📂 STORAGE / ROM INFORMATION");
+                        print("------------------------------------------------");
+
+                        if (navigator.storage && navigator.storage.estimate) {
+
+                            navigator.storage.estimate().then(estimate => {
+
+                                let used = (estimate.usage / 1073741824).toFixed(2);
+                                let total = (estimate.quota / 1073741824).toFixed(2);
+
+                                print("Estimated Used Storage: " + used + " GB");
+                                print("Estimated Total Storage: " + total + " GB");
+
+                                let free = (total - used).toFixed(2);
+
+                                print("Estimated Free Storage: " + free + " GB");
+
+                            });
+
+                        } else {
+
+                            print("Storage API Not Supported");
+
+                        }
+
+                        // ================= GPU =================
+                        print("================================================");
+                        print("🎮 GPU INFORMATION");
+                        print("------------------------------------------------");
+
+                        let canvas = document.createElement("canvas");
+                        let gl = canvas.getContext("webgl");
+
+                        if (gl) {
+
+                            let debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+
+                            if (debugInfo) {
+
+                                let gpu = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+                                let vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
+
+                                print("GPU Renderer: " + gpu);
+                                print("GPU Vendor: " + vendor);
+
+                            } else {
+
+                                print("GPU Debug Info Blocked");
+
+                            }
+
+                        } else {
+
+                            print("WebGL Not Supported");
+
+                        }
+
+                        // ================= SCREEN =================
+                        print("================================================");
+                        print("🖥 SCREEN INFORMATION");
+                        print("------------------------------------------------");
+
+                        print("Width: " + screen.width);
+                        print("Height: " + screen.height);
+                        print("Available Width: " + screen.availWidth);
+                        print("Available Height: " + screen.availHeight);
+                        print("Color Depth: " + screen.colorDepth);
+                        print("Pixel Depth: " + screen.pixelDepth);
+
+                        // DPI ESTIMATE
+                        let dpi = Math.round(window.devicePixelRatio * 96);
+
+                        print("Estimated DPI: " + dpi);
+
+                        // ================= DEVICE TYPE =================
+                        print("================================================");
+                        print("📲 DEVICE TYPE");
+                        print("------------------------------------------------");
+
+                        let ua = navigator.userAgent.toLowerCase();
+
+                        if (/mobile/i.test(ua)) {
+                            print("Device Type: MOBILE PHONE");
+                        } else if (/tablet/i.test(ua)) {
+                            print("Device Type: TABLET");
+                        } else {
+                            print("Device Type: DESKTOP / LAPTOP");
+                        }
+
+                        // ================= NETWORK =================
+                        print("================================================");
+                        print("📡 NETWORK INFORMATION");
+                        print("------------------------------------------------");
+
+                        if (navigator.connection) {
+
+                            print("Connection Type: " + navigator.connection.effectiveType);
+                            print("Downlink Speed: " + navigator.connection.downlink + " Mbps");
+                            print("RTT Ping: " + navigator.connection.rtt + " ms");
+                            print("Save Data Mode: " + navigator.connection.saveData);
+
+                        } else {
+
+                            print("Network API Not Supported");
+
+                        }
+
+                        // ================= BATTERY =================
+                        print("================================================");
+                        print("🔋 BATTERY INFORMATION");
+                        print("------------------------------------------------");
+
+                        if (navigator.getBattery) {
+
+                            navigator.getBattery().then(battery => {
+
+                                print("Battery Level: " + Math.floor(battery.level * 100) + "%");
+                                print("Charging: " + battery.charging);
+
+                                if (battery.charging) {
+                                    print("Battery Status: CHARGING");
+                                } else {
+                                    print("Battery Status: DISCHARGING");
+                                }
+
+                            });
+
+                        } else {
+
+                            print("Battery API Not Supported");
+
+                        }
+
+                        // ================= PERFORMANCE =================
+                        print("================================================");
+                        print("🚀 PERFORMANCE INFORMATION");
+                        print("------------------------------------------------");
+
+                        print("Page Load Time: " + Math.floor(performance.now()) + " ms");
+
+                        if (performance.memory) {
+
+                            print("Used JS Heap: " +
+                                Math.round(performance.memory.usedJSHeapSize / 1048576)
+                                + " MB");
+
+                            print("Total JS Heap: " +
+                                Math.round(performance.memory.totalJSHeapSize / 1048576)
+                                + " MB");
+
+                            print("JS Heap Limit: " +
+                                Math.round(performance.memory.jsHeapSizeLimit / 1048576)
+                                + " MB");
+
+                        } else {
+
+                            print("Performance Memory API Not Supported");
+
+                        }
+
+                        // ================= TOUCH =================
+                        print("================================================");
+                        print("👆 TOUCH INFORMATION");
+                        print("------------------------------------------------");
+
+                        print("Max Touch Points: " + navigator.maxTouchPoints);
+
+                        // ================= WINDOW =================
+                        print("================================================");
+                        print("🪟 WINDOW INFORMATION");
+                        print("------------------------------------------------");
+
+                        print("Inner Width: " + window.innerWidth);
+                        print("Inner Height: " + window.innerHeight);
+                        print("Outer Width: " + window.outerWidth);
+                        print("Outer Height: " + window.outerHeight);
+
+                        // ================= SECURITY =================
+                        print("================================================");
+                        print("🔒 SECURITY INFORMATION");
+                        print("------------------------------------------------");
+
+                        print("Protocol: " + location.protocol);
+
+                        if (location.protocol === "https:") {
+                            print("Connection Secure: YES");
+                        } else {
+                            print("Connection Secure: NO");
+                        }
+
+                        // ================= BROWSER =================
+                        print("================================================");
+                        print("🌐 BROWSER INFORMATION");
+                        print("------------------------------------------------");
+
+                        print("Browser Vendor: " + navigator.vendor);
+                        print("Browser Code Name: " + navigator.appCodeName);
+                        print("Browser Name: " + navigator.appName);
+                        print("Browser Version: " + navigator.appVersion);
+
+                        // ================= FPS TEST =================
+                        print("================================================");
+                        print("🎞 FPS PERFORMANCE");
+                        print("------------------------------------------------");
+
+                        let start = performance.now();
+
+                        requestAnimationFrame(() => {
+
+                            let fps = Math.round(1000 / (performance.now() - start));
+
+                            print("Estimated FPS: " + fps);
+
+                            if (fps >= 55) {
+                                print("FPS Status: SMOOTH");
+                            } else if (fps >= 30) {
+                                print("FPS Status: NORMAL");
+                            } else {
+                                print("FPS Status: LOW");
+                            }
+
+                        });
+
+                        // ================= PERFORMANCE SCORE =================
+                        print("================================================");
+                        print("🏆 DEVICE SCORE");
+                        print("------------------------------------------------");
+
+                        let score = 0;
+
+                        score += navigator.hardwareConcurrency || 1;
+                        score += navigator.deviceMemory || 1;
+
+                        if (screen.width >= 1920) score += 5;
+
+                        if (navigator.connection) {
+                            score += navigator.connection.downlink || 1;
+                        }
+
+                        score = Math.floor(score * 10);
+
+                        print("Performance Score: " + score + "/200");
+
+                        if (score >= 120) {
+                            print("Device Rank: ULTRA HIGH END");
+                        } else if (score >= 80) {
+                            print("Device Rank: MID HIGH");
+                        } else {
+                            print("Device Rank: LOW END");
+                        }
+
+                        // ================= FAKE DEVICE DETECTION =================
+                        print("================================================");
+                        print("🕵 DEVICE VALIDATION");
+                        print("------------------------------------------------");
+
+                        let suspicious = false;
+
+                        if (!navigator.hardwareConcurrency) suspicious = true;
+                        if (!navigator.platform) suspicious = true;
+                        if (screen.width < 200) suspicious = true;
+
+                        if (suspicious) {
+
+                            print("⚠ WARNING: Device info may be hidden or modified");
+
+                        } else {
+
+                            print("✔ Device information appears valid");
+
+                        }
+
+                        print("================================================");
+                        print("✔ ULTRA SCAN COMPLETE");
+                        print("================================================");
+                    }
+
                     else if (lower.startsWith("profile")) {
                         let parts = cmd.replace("profile ", "").split(",");
 
